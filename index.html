@@ -5,92 +5,137 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>MULTIPAR S.A. — Guardia 24/06/2026</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --azul:#1a3366;--azul2:#2b5797;--azul3:#4a7fc1;
   --verde:#1a7f4b;--verde2:#e6f5ec;
   --rojo:#991b1b;--rojo2:#fde8e8;
   --naranja:#b45309;--naranja2:#fff3cd;
   --gris:#f4f6f9;--gris2:#e8ecf0;--gris3:#6b7280;
-  --violeta:#6d28d9;--violeta2:#ede9fe;
   --borde:rgba(0,0,0,0.09);--radio:10px;
 }
 body{font-family:system-ui,-apple-system,sans-serif;font-size:13px;background:#eef1f6;color:#1a1a2e;max-width:430px;margin:0 auto;padding-bottom:80px}
 
-.app-header{background:var(--azul);padding:12px 14px 10px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.3)}
-.hdr-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+/* HEADER */
+.app-header{background:var(--azul);padding:10px 14px 8px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.3)}
+.hdr-top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
 .logo-box{background:#fff;border-radius:6px;padding:3px 8px;display:flex;align-items:center;gap:6px}
-.logo-text{font-size:13px;font-weight:700;color:var(--azul)}
-.logo-sub{font-size:8px;color:var(--azul3);font-weight:500;letter-spacing:.5px}
+.logo-text{font-size:12px;font-weight:700;color:var(--azul)}
+.logo-sub{font-size:7px;color:var(--azul3);font-weight:500;letter-spacing:.5px}
 .hdr-info{flex:1}
 .hdr-coord{color:rgba(255,255,255,0.9);font-size:11px;font-weight:500}
-.hdr-op{color:rgba(255,255,255,0.6);font-size:10px;margin-top:1px}
+.hdr-op{color:rgba(255,255,255,0.6);font-size:10px}
 .hdr-meta{display:flex;align-items:center;justify-content:space-between}
 .hdr-fecha{color:rgba(255,255,255,0.7);font-size:10px}
-.hdr-despachos{background:rgba(255,255,255,0.12);border-radius:6px;padding:3px 10px;color:#fff;font-size:10px}
-.hdr-despachos strong{font-size:13px}
+.hdr-despachos{background:rgba(255,255,255,0.12);border-radius:6px;padding:2px 8px;color:#fff;font-size:10px}
+.hdr-despachos strong{font-size:12px}
 
-.nav-tabs{display:flex;background:var(--azul);border-top:1px solid rgba(255,255,255,0.1);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+/* SEARCH BAR GLOBAL */
+.search-global{background:rgba(255,255,255,0.12);border-radius:8px;margin:6px 0 2px;display:flex;align-items:center;gap:6px;padding:5px 10px}
+.search-global input{background:none;border:none;outline:none;color:#fff;font-size:12px;flex:1;width:100%}
+.search-global input::placeholder{color:rgba(255,255,255,0.5)}
+.search-global span{color:rgba(255,255,255,0.6);font-size:14px}
+.search-clear{color:rgba(255,255,255,0.5);cursor:pointer;font-size:16px;display:none}
+
+/* NAV TABS */
+.nav-tabs{display:flex;background:var(--azul);border-top:1px solid rgba(255,255,255,0.1);overflow-x:auto;scrollbar-width:none}
 .nav-tabs::-webkit-scrollbar{display:none}
-.nav-tab{flex:0 0 auto;padding:8px 16px;color:rgba(255,255,255,0.6);font-size:11px;font-weight:500;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s}
+.nav-tab{flex:0 0 auto;padding:7px 14px;color:rgba(255,255,255,0.6);font-size:11px;font-weight:500;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s}
 .nav-tab.active{color:#fff;border-bottom-color:#5b9bd5;background:rgba(255,255,255,0.05)}
 
+/* SECTIONS */
 .section{display:none;padding:10px 10px 0}
 .section.active{display:block}
 
-.card{background:#fff;border-radius:var(--radio);border:0.5px solid var(--borde);margin-bottom:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+/* FILTER BAR */
+.filter-bar{background:#fff;border-radius:8px;border:0.5px solid var(--borde);margin-bottom:8px;overflow:hidden}
+.filter-row{display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;padding:6px 8px;gap:6px}
+.filter-row::-webkit-scrollbar{display:none}
+.filter-btn{flex:0 0 auto;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid var(--borde);background:var(--gris);color:var(--gris3);transition:all .15s;white-space:nowrap}
+.filter-btn.active{background:var(--azul);color:#fff;border-color:var(--azul)}
+.filter-btn.verde.active{background:var(--verde);border-color:var(--verde)}
+.filter-btn.naranja.active{background:var(--naranja);border-color:var(--naranja)}
+.filter-btn.rojo.active{background:var(--rojo);border-color:var(--rojo)}
+.filter-search{display:flex;align-items:center;gap:6px;padding:4px 8px 6px;border-top:0.5px solid var(--borde)}
+.filter-search input{flex:1;border:none;outline:none;font-size:12px;color:#1a1a2e;background:var(--gris);border-radius:6px;padding:5px 8px}
+.filter-search input::placeholder{color:var(--gris3)}
+.filter-search span{font-size:12px;color:var(--gris3)}
+
+/* SORT BAR */
+.sort-bar{display:flex;align-items:center;gap:6px;padding:4px 8px 6px;border-top:0.5px solid var(--borde)}
+.sort-label{font-size:10px;color:var(--gris3);white-space:nowrap}
+.sort-btn{flex:0 0 auto;padding:3px 8px;border-radius:20px;font-size:10px;cursor:pointer;border:1px solid var(--borde);background:var(--gris);color:var(--gris3);transition:all .15s;white-space:nowrap}
+.sort-btn.active{background:var(--azul2);color:#fff;border-color:var(--azul2)}
+
+/* STATS ROW */
+.stats-row{display:flex;gap:6px;margin-bottom:8px}
+.stat-box{flex:1;background:#fff;border-radius:8px;border:0.5px solid var(--borde);padding:7px 10px;text-align:center}
+.stat-num{font-size:20px;font-weight:700}
+.stat-num.verde{color:var(--verde)}.stat-num.naranja{color:var(--naranja)}.stat-num.rojo{color:var(--rojo)}.stat-num.azul{color:var(--azul2)}
+.stat-label{font-size:9px;color:var(--gris3);margin-top:1px}
+
+/* CARD */
+.card{background:#fff;border-radius:var(--radio);border:0.5px solid var(--borde);margin-bottom:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
 .card-head{display:flex;align-items:center;gap:7px;padding:9px 12px;border-bottom:0.5px solid var(--borde);background:#fafbfc}
 .card-head-title{font-size:12px;font-weight:600;flex:1;color:var(--azul)}
 .card-head-count{background:var(--gris2);border-radius:20px;padding:1px 8px;font-size:10px;font-weight:500;color:var(--gris3)}
 
-.prac-row{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;border-bottom:0.5px solid var(--borde)}
+/* PRACTICO ROW */
+.prac-row{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;border-bottom:0.5px solid var(--borde);transition:background .1s}
 .prac-row:last-child{border-bottom:none}
+.prac-row.hidden{display:none}
 .prac-num{width:24px;height:24px;border-radius:50%;background:var(--azul);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
 .prac-num.cambio{background:var(--naranja)}
 .prac-info{flex:1;min-width:0}
 .prac-nombre{font-size:13px;font-weight:600}
 .prac-nombre.cambio{color:var(--naranja)}
 .prac-detalle{font-size:10.5px;color:var(--gris3);margin-top:1px}
-.prac-obs{font-size:10.5px;margin-top:3px;font-weight:500}
-.obs-cambio{color:var(--naranja)}
-.prac-badge{font-size:10px;color:#fff;border-radius:5px;padding:3px 7px;white-space:nowrap;flex-shrink:0;align-self:center;font-weight:600}
-.badge-et{background:var(--azul2)}
+.prac-obs{font-size:10.5px;margin-top:3px;font-weight:500;color:var(--naranja)}
+.prac-badge{font-size:10px;color:#fff;border-radius:5px;padding:3px 7px;white-space:nowrap;flex-shrink:0;align-self:center;font-weight:600;background:var(--azul2)}
 
-.franco-row{padding:9px 12px;border-bottom:0.5px solid var(--borde)}
+/* FRANCO ROW */
+.franco-row{padding:9px 12px;border-bottom:0.5px solid var(--borde);transition:background .1s}
 .franco-row:last-child{border-bottom:none}
+.franco-row.hidden{display:none}
 .franco-top{display:flex;align-items:center;gap:6px;margin-bottom:3px}
 .franco-num{width:20px;height:20px;border-radius:50%;background:var(--gris2);color:var(--gris3);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .franco-nombre{font-size:12.5px;font-weight:600;flex:1}
 .franco-fechas{font-size:10px;color:var(--gris3);padding-left:26px;display:flex;gap:10px;flex-wrap:wrap}
 .franco-obs{font-size:10px;color:var(--naranja);padding-left:26px;margin-top:3px;font-weight:500}
 
+/* VARIOS ROW */
 .varios-row{padding:9px 12px;border-bottom:0.5px solid var(--borde);display:flex;align-items:flex-start;gap:8px}
 .varios-row:last-child{border-bottom:none}
+.varios-row.hidden{display:none}
 .varios-icon{font-size:18px;flex-shrink:0;margin-top:1px}
 .varios-nombre{font-size:12.5px;font-weight:600}
 .varios-detalle{font-size:10px;color:var(--gris3);margin-top:2px}
 
+/* SEC LABEL */
 .sec-label{font-size:10px;font-weight:600;color:var(--gris3);text-transform:uppercase;letter-spacing:.06em;padding:6px 12px 4px;background:#fafbfc;border-top:0.5px solid var(--borde);border-bottom:0.5px solid var(--borde)}
 
+/* BADGES */
 .badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:500}
 .b-naranja{background:var(--naranja2);color:var(--naranja)}
-.b-rojo{background:var(--rojo2);color:var(--rojo)}
 .b-azul{background:#e8f0fb;color:var(--azul2)}
 .b-verde{background:var(--verde2);color:var(--verde)}
 .b-gris{background:var(--gris2);color:var(--gris3)}
 
+/* DIV TITLE */
 .div-title{font-size:11px;font-weight:700;color:var(--azul);padding:10px 0 5px;display:flex;align-items:center;gap:6px}
 .div-title::after{content:'';flex:1;height:1px;background:var(--azul2);opacity:.2}
 
-.desp-card{border-radius:var(--radio);margin-bottom:10px;overflow:hidden;border:0.5px solid var(--borde);box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+/* DESPACHO CARD */
+.desp-card{border-radius:var(--radio);margin-bottom:8px;overflow:hidden;border:0.5px solid var(--borde);box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.desp-card.hidden{display:none}
 .desp-head{padding:10px 12px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .desp-head.subida{background:#e6f5ec;border-bottom:2px solid var(--verde)}
 .desp-head.bajada{background:#e8f0fb;border-bottom:2px solid var(--azul2)}
 .desp-head.movimiento{background:var(--naranja2);border-bottom:2px solid var(--naranja)}
-.desp-buque{font-size:15px;font-weight:700}
+.desp-buque{font-size:14px;font-weight:700}
 .desp-meta{font-size:10px;color:var(--gris3);margin-top:2px}
 .desp-body{background:#fff;padding:10px 12px}
-.desp-practicos{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.desp-practicos{display:flex;flex-direction:column;gap:5px;margin-bottom:8px}
 .prac-chip{display:flex;align-items:center;gap:6px;background:var(--gris);border-radius:7px;padding:5px 8px}
 .chip-pos{width:20px;height:20px;border-radius:50%;background:var(--azul);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .chip-nombre{font-size:12px;font-weight:500;flex:1}
@@ -99,11 +144,11 @@ body{font-family:system-ui,-apple-system,sans-serif;font-size:13px;background:#e
 .desp-datos{border-top:0.5px solid var(--borde);padding-top:8px;display:flex;flex-direction:column;gap:5px}
 .dato-row{display:flex;gap:6px}
 .dato-label{font-size:10px;color:var(--gris3);width:90px;flex-shrink:0;padding-top:1px}
-.dato-val{font-size:11.5px;font-weight:500;color:#1a1a2e;flex:1}
+.dato-val{font-size:11.5px;font-weight:500;flex:1}
 
-.vacio{background:#f8f9fa;border-radius:8px;padding:12px;font-size:11.5px;color:var(--gris3);text-align:center;border:0.5px dashed var(--borde);margin-bottom:10px}
-
+/* BUQUE PREVISTO */
 .buque-row{background:#fff;border-radius:8px;margin-bottom:7px;border:0.5px solid var(--borde);border-left:3px solid var(--gris2);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.buque-row.hidden{display:none}
 .buque-row.posible{border-left-color:var(--naranja)}
 .buque-row.autorizado{border-left-color:var(--verde)}
 .buque-top{display:flex;align-items:center;gap:8px;padding:9px 12px}
@@ -116,11 +161,10 @@ body{font-family:system-ui,-apple-system,sans-serif;font-size:13px;background:#e
 .buque-tilde{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--borde);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--gris3);font-size:14px;cursor:pointer;transition:all .2s;user-select:none}
 .buque-tilde.ok{border-color:var(--verde);background:var(--verde2);color:var(--verde)}
 
-.leyenda{display:flex;gap:10px;flex-wrap:wrap;padding:8px 12px;font-size:10px;border-bottom:0.5px solid var(--borde);background:#fafbfc}
-.ley-item{display:flex;align-items:center;gap:4px;color:var(--gris3)}
-
+/* OBS */
 .obs-item{padding:10px 12px;border-bottom:0.5px solid var(--borde)}
 .obs-item:last-child{border-bottom:none}
+.obs-item.hidden{display:none}
 .obs-tag{display:inline-block;font-size:9.5px;font-weight:600;padding:2px 8px;border-radius:10px;margin-bottom:4px}
 .tag-rojo{background:var(--rojo2);color:var(--rojo)}
 .tag-naranja{background:var(--naranja2);color:var(--naranja)}
@@ -129,6 +173,7 @@ body{font-family:system-ui,-apple-system,sans-serif;font-size:13px;background:#e
 .obs-texto{font-size:11.5px;color:#374151;line-height:1.6}
 .obs-fecha{font-size:10px;color:var(--gris3);margin-top:3px}
 
+/* DETERMINANTES */
 .det-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:0.5px solid var(--borde)}
 .det-row:last-child{border-bottom:none}
 .det-label{font-size:11.5px;color:#374151}
@@ -136,18 +181,29 @@ body{font-family:system-ui,-apple-system,sans-serif;font-size:13px;background:#e
 .det-val{font-size:14px;font-weight:700}
 .det-ok{color:var(--verde)}.det-warn{color:var(--naranja)}.det-crit{color:var(--rojo)}
 
+/* LINKS */
 .link-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:0.5px solid var(--borde);text-decoration:none;color:inherit}
 .link-row:last-child{border-bottom:none}
 .link-icon{width:32px;height:32px;border-radius:8px;background:var(--azul);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
 .link-text{flex:1}
 .link-title{font-size:12.5px;font-weight:600}
 .link-url{font-size:10px;color:var(--azul3);margin-top:1px}
-.link-arrow{color:var(--gris3);font-size:16px}
 
+/* TEL */
 .tel-row{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:0.5px solid var(--borde)}
 .tel-row:last-child{border-bottom:none}
 .tel-puerto{font-size:12px;font-weight:500;flex:1}
 .tel-num{font-size:11.5px;color:var(--azul2);text-decoration:none;font-weight:500}
+
+/* EMPTY */
+.empty{padding:14px 12px;text-align:center;font-size:11.5px;color:var(--gris3);font-style:italic}
+
+/* LEYENDA */
+.leyenda{display:flex;gap:10px;flex-wrap:wrap;padding:8px 12px;font-size:10px;background:#fafbfc;border-bottom:0.5px solid var(--borde)}
+.ley-item{display:flex;align-items:center;gap:4px;color:var(--gris3)}
+
+/* HIGHLIGHT */
+mark{background:#fff3cd;border-radius:2px;padding:0 1px}
 </style>
 </head>
 <body>
@@ -155,21 +211,26 @@ body{font-family:system-ui,-apple-system,sans-serif;font-size:13px;background:#e
 <div class="app-header">
   <div class="hdr-top">
     <div class="logo-box">
-      <span style="font-size:20px">⚓</span>
+      <span style="font-size:18px">⚓</span>
       <div><div class="logo-text">MULTIPAR S.A.</div><div class="logo-sub">RÍO PARANÁ</div></div>
     </div>
     <div class="hdr-info">
       <div class="hdr-coord">👤 Coord: SLUTZKY, Sergio</div>
       <div class="hdr-op">Operador: Ezequiel → Leonel</div>
     </div>
+    <div class="hdr-despachos">Mes: <strong>47</strong></div>
+  </div>
+  <div class="search-global">
+    <span>🔍</span>
+    <input type="text" id="globalSearch" placeholder="Buscar práctico, buque, agencia..." oninput="globalSearch(this.value)">
+    <span class="search-clear" id="searchClear" onclick="clearSearch()">✕</span>
   </div>
   <div class="hdr-meta">
     <div class="hdr-fecha">📅 24/06/2026 — 19:38 hs</div>
-    <div class="hdr-despachos">Despachos mes: <strong>47</strong></div>
   </div>
 </div>
 
-<div class="nav-tabs" id="navTabs">
+<div class="nav-tabs">
   <div class="nav-tab active" onclick="showTab('turno')">👥 Turno</div>
   <div class="nav-tab" onclick="showTab('buques')">🚢 Buques</div>
   <div class="nav-tab" onclick="showTab('previstos')">📋 Previstos</div>
@@ -180,137 +241,157 @@ body{font-family:system-ui,-apple-system,sans-serif;font-size:13px;background:#e
 <!-- ══ TURNO ══ -->
 <div class="section active" id="sec-turno">
 
-  <div class="card" style="margin-top:10px">
+  <div class="stats-row" style="margin-top:10px">
+    <div class="stat-box"><div class="stat-num verde">8</div><div class="stat-label">En turno</div></div>
+    <div class="stat-box"><div class="stat-num naranja">11</div><div class="stat-label">Francos</div></div>
+    <div class="stat-box"><div class="stat-num rojo">5</div><div class="stat-label">Varios</div></div>
+    <div class="stat-box"><div class="stat-num azul">2</div><div class="stat-label">Cambios</div></div>
+  </div>
+
+  <!-- Filtros turno -->
+  <div class="filter-bar">
+    <div class="filter-row">
+      <div class="filter-btn active" onclick="filterTurno('todos',this)">Todos</div>
+      <div class="filter-btn verde" onclick="filterTurno('turno',this)">En turno</div>
+      <div class="filter-btn naranja" onclick="filterTurno('franco',this)">Francos</div>
+      <div class="filter-btn rojo" onclick="filterTurno('varios',this)">Varios</div>
+      <div class="filter-btn" onclick="filterTurno('cambio',this)">⇄ Cambios</div>
+    </div>
+    <div class="filter-search">
+      <span>🔍</span>
+      <input type="text" id="turnoSearch" placeholder="Buscar práctico..." oninput="searchTurno(this.value)">
+    </div>
+    <div class="sort-bar">
+      <span class="sort-label">Ordenar:</span>
+      <div class="sort-btn active" onclick="sortTurno('orden',this)">Por posición</div>
+      <div class="sort-btn" onclick="sortTurno('alfa',this)">A–Z</div>
+      <div class="sort-btn" onclick="sortTurno('hora',this)">Por hora</div>
+    </div>
+  </div>
+
+  <!-- TURNO ACTIVO -->
+  <div class="card" id="cardTurno">
     <div class="card-head">
-      <span>🟢</span><span class="card-head-title">Prácticos en turno</span><span class="card-head-count">8</span>
+      <span>🟢</span><span class="card-head-title">En turno</span><span class="card-head-count" id="cntTurno">8</span>
     </div>
-    <div class="prac-row">
-      <div class="prac-num">1</div>
-      <div class="prac-info"><div class="prac-nombre">Vaccaro, Matías</div><div class="prac-detalle">Ingreso: 24/06 – 06:00</div></div>
-      <div class="prac-badge badge-et">E/T</div>
-    </div>
-    <div class="prac-row">
-      <div class="prac-num">2</div>
-      <div class="prac-info"><div class="prac-nombre">De Biase, Leonardo</div><div class="prac-detalle">Ingreso: 24/06 – 06:00</div></div>
-      <div class="prac-badge badge-et">E/T</div>
-    </div>
-    <div class="prac-row">
-      <div class="prac-num cambio">3</div>
-      <div class="prac-info">
-        <div class="prac-nombre cambio">Mochi, Horacio</div>
-        <div class="prac-detalle">Ingreso: 24/06 – 06:00</div>
-        <div class="prac-obs obs-cambio">⇄ Cubre a Canonico (pos. 2 – franco)</div>
+    <div id="listaTurno">
+      <div class="prac-row" data-tipo="turno" data-nombre="Vaccaro Matías" data-pos="1" data-hora="06:00">
+        <div class="prac-num">1</div>
+        <div class="prac-info"><div class="prac-nombre">Vaccaro, Matías</div><div class="prac-detalle">Ingreso: 24/06 – 06:00</div></div>
+        <div class="prac-badge">E/T</div>
       </div>
-      <div class="prac-badge badge-et">E/T</div>
-    </div>
-    <div class="prac-row">
-      <div class="prac-num">4</div>
-      <div class="prac-info"><div class="prac-nombre">Rotela Fiore, Carlos</div><div class="prac-detalle">Ingreso: 24/06 – 01:45</div></div>
-      <div class="prac-badge badge-et">E/T</div>
-    </div>
-    <div class="prac-row">
-      <div class="prac-num cambio">5</div>
-      <div class="prac-info">
-        <div class="prac-nombre cambio">Torres, Javier</div>
-        <div class="prac-detalle">Ingreso: 24/06 – 06:00</div>
-        <div class="prac-obs obs-cambio">⇄ Cubre a Romano (pos. 5 – franco)</div>
+      <div class="prac-row" data-tipo="turno" data-nombre="De Biase Leonardo" data-pos="2" data-hora="06:00">
+        <div class="prac-num">2</div>
+        <div class="prac-info"><div class="prac-nombre">De Biase, Leonardo</div><div class="prac-detalle">Ingreso: 24/06 – 06:00</div></div>
+        <div class="prac-badge">E/T</div>
       </div>
-      <div class="prac-badge badge-et">E/T</div>
-    </div>
-    <div class="prac-row">
-      <div class="prac-num">6</div>
-      <div class="prac-info"><div class="prac-nombre">Slutzky, Sergio</div><div class="prac-detalle">Ingreso: 13/06 – 22:46</div></div>
-      <div class="prac-badge badge-et">E/T</div>
-    </div>
-    <div class="prac-row">
-      <div class="prac-num">7</div>
-      <div class="prac-info"><div class="prac-nombre">Ferrari, Germán</div><div class="prac-detalle">Ingreso: 25/06 – 00:15</div></div>
-      <div class="prac-badge badge-et">E/T</div>
-    </div>
-    <div class="prac-row">
-      <div class="prac-num">8</div>
-      <div class="prac-info"><div class="prac-nombre">Sanguinetti, Lisandro</div><div class="prac-detalle">Ingreso: 25/06 – 00:16</div></div>
-      <div class="prac-badge badge-et">E/T</div>
+      <div class="prac-row" data-tipo="turno cambio" data-nombre="Mochi Horacio" data-pos="3" data-hora="06:00">
+        <div class="prac-num cambio">3</div>
+        <div class="prac-info">
+          <div class="prac-nombre cambio">Mochi, Horacio</div>
+          <div class="prac-detalle">Ingreso: 24/06 – 06:00</div>
+          <div class="prac-obs">⇄ Cubre a Canonico (pos. 2 – franco)</div>
+        </div>
+        <div class="prac-badge">E/T</div>
+      </div>
+      <div class="prac-row" data-tipo="turno" data-nombre="Rotela Fiore Carlos" data-pos="4" data-hora="01:45">
+        <div class="prac-num">4</div>
+        <div class="prac-info"><div class="prac-nombre">Rotela Fiore, Carlos</div><div class="prac-detalle">Ingreso: 24/06 – 01:45</div></div>
+        <div class="prac-badge">E/T</div>
+      </div>
+      <div class="prac-row" data-tipo="turno cambio" data-nombre="Torres Javier" data-pos="5" data-hora="06:00">
+        <div class="prac-num cambio">5</div>
+        <div class="prac-info">
+          <div class="prac-nombre cambio">Torres, Javier</div>
+          <div class="prac-detalle">Ingreso: 24/06 – 06:00</div>
+          <div class="prac-obs">⇄ Cubre a Romano (pos. 5 – franco)</div>
+        </div>
+        <div class="prac-badge">E/T</div>
+      </div>
+      <div class="prac-row" data-tipo="turno" data-nombre="Slutzky Sergio" data-pos="6" data-hora="22:46">
+        <div class="prac-num">6</div>
+        <div class="prac-info"><div class="prac-nombre">Slutzky, Sergio</div><div class="prac-detalle">Ingreso: 13/06 – 22:46</div></div>
+        <div class="prac-badge">E/T</div>
+      </div>
+      <div class="prac-row" data-tipo="turno" data-nombre="Ferrari Germán" data-pos="7" data-hora="00:15">
+        <div class="prac-num">7</div>
+        <div class="prac-info"><div class="prac-nombre">Ferrari, Germán</div><div class="prac-detalle">Ingreso: 25/06 – 00:15</div></div>
+        <div class="prac-badge">E/T</div>
+      </div>
+      <div class="prac-row" data-tipo="turno" data-nombre="Sanguinetti Lisandro" data-pos="8" data-hora="00:16">
+        <div class="prac-num">8</div>
+        <div class="prac-info"><div class="prac-nombre">Sanguinetti, Lisandro</div><div class="prac-detalle">Ingreso: 25/06 – 00:16</div></div>
+        <div class="prac-badge">E/T</div>
+      </div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-head"><span>🟡</span><span class="card-head-title">Francos</span><span class="card-head-count">11</span></div>
-    <div class="franco-row">
-      <div class="franco-top"><div class="franco-num">1</div><div class="franco-nombre">Torres, Gabriel</div><span class="badge b-naranja">FRANCO</span></div>
-      <div class="franco-fechas"><span>Salida: 24/06 – 06:00</span><span>Regresa: 08/07 – 06:00</span></div>
-    </div>
-    <div class="franco-row">
-      <div class="franco-top"><div class="franco-num">2</div><div class="franco-nombre">Canonico, Roberto</div><span class="badge b-naranja">FRANCO</span></div>
-      <div class="franco-fechas"><span>Salida: 24/06 – 06:00</span><span>Regresa: 08/07 – 06:00</span></div>
-      <div class="franco-obs">⇄ Cubierto por Mochi (pos. 3 en turno)</div>
-    </div>
-    <div class="franco-row">
-      <div class="franco-top"><div class="franco-num">3</div><div class="franco-nombre">Bretschneider, Rodolfo</div><span class="badge b-naranja">FRANCO</span></div>
-      <div class="franco-fechas"><span>Salida: 24/06 – 06:00</span><span>Regresa: 08/07 – 06:00</span></div>
-    </div>
-    <div class="franco-row">
-      <div class="franco-top"><div class="franco-num">4</div><div class="franco-nombre">Bayones, Fernando</div><span class="badge b-naranja">FRANCO</span></div>
-      <div class="franco-fechas"><span>Salida: 24/06 – 07:15</span><span>Regresa: 08/07 – 07:15</span></div>
-    </div>
-    <div class="franco-row">
-      <div class="franco-top"><div class="franco-num">5</div><div class="franco-nombre">Romano, Marcelo</div><span class="badge b-naranja">FRANCO</span></div>
-      <div class="franco-fechas"><span>Salida: 24/06 – 10:10</span><span>Regresa: 08/07 – 10:10</span></div>
-      <div class="franco-obs">⇄ Cubierto por Torres J. (pos. 5 en turno)</div>
-    </div>
-    <div class="franco-row">
-      <div class="franco-top"><div class="franco-num">6</div><div class="franco-nombre">Flores, Luis</div><span class="badge b-naranja">FRANCO</span></div>
-      <div class="franco-fechas"><span>Salida: 24/06 – 06:00</span><span>Regresa: 08/07 – 06:00</span></div>
-    </div>
-    <div class="franco-row">
-      <div class="franco-top"><div class="franco-num">7</div><div class="franco-nombre">Falcon, Jorge</div><span class="badge b-naranja">FRANCO</span></div>
-      <div class="franco-fechas"><span>Salida: 23/06 – 06:00</span><span>Regresa: 28/06 – 06:00</span></div>
-    </div>
-    <div class="franco-row">
-      <div class="franco-top"><div class="franco-num">8</div><div class="franco-nombre">Slutzky, Sergio</div><span class="badge b-naranja">FRANCO</span></div>
-      <div class="franco-fechas"><span>Sale: 08/07 – 06:00</span><span>próximo turno</span></div>
-      <div class="franco-obs">⇄ Cambia con Sanguinetti el 01/07/2026</div>
-    </div>
-    <div class="franco-row">
-      <div class="franco-top"><div class="franco-num">8</div><div class="franco-nombre">Ojeda, Sergio</div><span class="badge b-naranja">FRANCO</span></div>
-      <div class="franco-fechas"><span>Salida: 10/06 – 19:55</span><span>Regresa: 24/06 – 19:55</span></div>
-    </div>
-    <div class="franco-row">
-      <div class="franco-top"><div class="franco-num">8</div><div class="franco-nombre">Cuba, Emmanuel</div><span class="badge b-naranja">FRANCO</span></div>
-      <div class="franco-fechas"><span>Salida: 23/06 – 06:00</span><span>Regresa: 10/07 – 06:00</span></div>
-    </div>
-    <div class="franco-row">
-      <div class="franco-top"><div class="franco-num">8</div><div class="franco-nombre">Martínez, Cristian</div><span class="badge b-naranja">FRANCO</span></div>
-      <div class="franco-fechas"><span>Salida: 24/06 – 06:00</span><span>Regresa: 08/07 – 06:00</span></div>
+  <!-- FRANCOS -->
+  <div class="card" id="cardFrancos">
+    <div class="card-head"><span>🟡</span><span class="card-head-title">Francos</span><span class="card-head-count" id="cntFrancos">11</span></div>
+    <div id="listaFrancos">
+      <div class="franco-row" data-tipo="franco" data-nombre="Torres Gabriel">
+        <div class="franco-top"><div class="franco-num">1</div><div class="franco-nombre">Torres, Gabriel</div><span class="badge b-naranja">FRANCO</span></div>
+        <div class="franco-fechas"><span>Salida: 24/06 – 06:00</span><span>Regresa: 08/07 – 06:00</span></div>
+      </div>
+      <div class="franco-row" data-tipo="franco cambio" data-nombre="Canonico Roberto">
+        <div class="franco-top"><div class="franco-num">2</div><div class="franco-nombre">Canonico, Roberto</div><span class="badge b-naranja">FRANCO</span></div>
+        <div class="franco-fechas"><span>Salida: 24/06 – 06:00</span><span>Regresa: 08/07 – 06:00</span></div>
+        <div class="franco-obs">⇄ Cubierto por Mochi (pos. 3 en turno)</div>
+      </div>
+      <div class="franco-row" data-tipo="franco" data-nombre="Bretschneider Rodolfo">
+        <div class="franco-top"><div class="franco-num">3</div><div class="franco-nombre">Bretschneider, Rodolfo</div><span class="badge b-naranja">FRANCO</span></div>
+        <div class="franco-fechas"><span>Salida: 24/06 – 06:00</span><span>Regresa: 08/07 – 06:00</span></div>
+      </div>
+      <div class="franco-row" data-tipo="franco" data-nombre="Bayones Fernando">
+        <div class="franco-top"><div class="franco-num">4</div><div class="franco-nombre">Bayones, Fernando</div><span class="badge b-naranja">FRANCO</span></div>
+        <div class="franco-fechas"><span>Salida: 24/06 – 07:15</span><span>Regresa: 08/07 – 07:15</span></div>
+      </div>
+      <div class="franco-row" data-tipo="franco cambio" data-nombre="Romano Marcelo">
+        <div class="franco-top"><div class="franco-num">5</div><div class="franco-nombre">Romano, Marcelo</div><span class="badge b-naranja">FRANCO</span></div>
+        <div class="franco-fechas"><span>Salida: 24/06 – 10:10</span><span>Regresa: 08/07 – 10:10</span></div>
+        <div class="franco-obs">⇄ Cubierto por Torres J. (pos. 5 en turno)</div>
+      </div>
+      <div class="franco-row" data-tipo="franco" data-nombre="Flores Luis">
+        <div class="franco-top"><div class="franco-num">6</div><div class="franco-nombre">Flores, Luis</div><span class="badge b-naranja">FRANCO</span></div>
+        <div class="franco-fechas"><span>Salida: 24/06 – 06:00</span><span>Regresa: 08/07 – 06:00</span></div>
+      </div>
+      <div class="franco-row" data-tipo="franco" data-nombre="Falcon Jorge">
+        <div class="franco-top"><div class="franco-num">7</div><div class="franco-nombre">Falcon, Jorge</div><span class="badge b-naranja">FRANCO</span></div>
+        <div class="franco-fechas"><span>Salida: 23/06 – 06:00</span><span>Regresa: 28/06 – 06:00</span></div>
+      </div>
+      <div class="franco-row" data-tipo="franco cambio" data-nombre="Slutzky Sergio">
+        <div class="franco-top"><div class="franco-num">8</div><div class="franco-nombre">Slutzky, Sergio</div><span class="badge b-naranja">FRANCO</span></div>
+        <div class="franco-fechas"><span>Sale: 08/07 – 06:00</span></div>
+        <div class="franco-obs">⇄ Cambia con Sanguinetti el 01/07/2026</div>
+      </div>
+      <div class="franco-row" data-tipo="franco" data-nombre="Ojeda Sergio">
+        <div class="franco-top"><div class="franco-num">8</div><div class="franco-nombre">Ojeda, Sergio</div><span class="badge b-naranja">FRANCO</span></div>
+        <div class="franco-fechas"><span>Salida: 10/06 – 19:55</span><span>Regresa: 24/06 – 19:55</span></div>
+      </div>
+      <div class="franco-row" data-tipo="franco" data-nombre="Cuba Emmanuel">
+        <div class="franco-top"><div class="franco-num">8</div><div class="franco-nombre">Cuba, Emmanuel</div><span class="badge b-naranja">FRANCO</span></div>
+        <div class="franco-fechas"><span>Salida: 23/06 – 06:00</span><span>Regresa: 10/07 – 06:00</span></div>
+      </div>
+      <div class="franco-row" data-tipo="franco" data-nombre="Martínez Cristian">
+        <div class="franco-top"><div class="franco-num">8</div><div class="franco-nombre">Martínez, Cristian</div><span class="badge b-naranja">FRANCO</span></div>
+        <div class="franco-fechas"><span>Salida: 24/06 – 06:00</span><span>Regresa: 08/07 – 06:00</span></div>
+      </div>
     </div>
   </div>
 
-  <div class="card">
+  <!-- VARIOS -->
+  <div class="card" id="cardVarios">
     <div class="card-head"><span>🔵</span><span class="card-head-title">Varios</span><span class="card-head-count">5</span></div>
     <div class="sec-label">Enfermos</div>
-    <div class="varios-row">
-      <div class="varios-icon">🏥</div>
-      <div><div class="varios-nombre">Nirschl, Héctor</div><div class="varios-detalle">Licencia médica — hasta 08/07 – 06:00</div></div>
-    </div>
-    <div class="varios-row">
-      <div class="varios-icon">🏥</div>
-      <div><div class="varios-nombre">Pascual, Germán</div><div class="varios-detalle">Licencia médica — hasta 25/06 – 07:45</div></div>
-    </div>
-    <div class="sec-label">Licencia por fallecimiento de familiar</div>
-    <div class="varios-row">
-      <div class="varios-icon">🕊️</div>
-      <div><div class="varios-nombre">Val, Gabriel</div><div class="varios-detalle">Fallecimiento de su madre — desde 21/06, hasta 24/06 – 22:25</div></div>
-    </div>
+    <div class="varios-row" data-tipo="varios" data-nombre="Nirschl Héctor"><div class="varios-icon">🏥</div><div><div class="varios-nombre">Nirschl, Héctor</div><div class="varios-detalle">Licencia médica — hasta 08/07 – 06:00</div></div></div>
+    <div class="varios-row" data-tipo="varios" data-nombre="Pascual Germán"><div class="varios-icon">🏥</div><div><div class="varios-nombre">Pascual, Germán</div><div class="varios-detalle">Licencia médica — hasta 25/06 – 07:45</div></div></div>
+    <div class="sec-label">Fallecimiento de familiar</div>
+    <div class="varios-row" data-tipo="varios" data-nombre="Val Gabriel"><div class="varios-icon">🕊️</div><div><div class="varios-nombre">Val, Gabriel</div><div class="varios-detalle">Fallecimiento de su madre — hasta 24/06 – 22:25</div></div></div>
     <div class="sec-label">Jubilado</div>
-    <div class="varios-row">
-      <div class="varios-icon">🎖️</div>
-      <div><div class="varios-nombre">Farías, Marcelo</div><div class="varios-detalle">Jubilado desde 01/02/2026</div></div>
-    </div>
+    <div class="varios-row" data-tipo="varios" data-nombre="Farías Marcelo"><div class="varios-icon">🎖️</div><div><div class="varios-nombre">Farías, Marcelo</div><div class="varios-detalle">Jubilado desde 01/02/2026</div></div></div>
     <div class="sec-label">Licencia extendida</div>
-    <div class="varios-row">
-      <div class="varios-icon">📋</div>
-      <div><div class="varios-nombre">Cuba, Sebastián</div><div class="varios-detalle">Licencia — hasta 08/07 – 06:00</div></div>
-    </div>
+    <div class="varios-row" data-tipo="varios" data-nombre="Cuba Sebastián"><div class="varios-icon">📋</div><div><div class="varios-nombre">Cuba, Sebastián</div><div class="varios-detalle">Licencia — hasta 08/07 – 06:00</div></div></div>
   </div>
 </div>
 
@@ -320,182 +401,215 @@ body{font-family:system-ui,-apple-system,sans-serif;font-size:13px;background:#e
     <div class="leyenda">
       <div class="ley-item">🤝 Nos cubren</div>
       <div class="ley-item">🔄 Cubrimos a otro</div>
-      <div class="ley-item">👤 Práctico propio</div>
+      <div class="ley-item">👤 Propio</div>
     </div>
   </div>
 
-  <div class="div-title">⬆️ Subida — Despachados</div>
-  <div class="vacio" style="border-color:#1a7f4b4d">Sin despachos de subida activos</div>
-
-  <div class="div-title">⬇️ Bajada — Despachados</div>
-
-  <div class="desp-card">
-    <div class="desp-head bajada">
-      <div><div class="desp-buque">PHILLIP BAY</div><div class="desp-meta">ISA · Islas Marshall</div></div>
-      <span class="badge b-azul">🌊 TRA</span>
+  <div class="filter-bar">
+    <div class="filter-row">
+      <div class="filter-btn active" onclick="filterBuques('todos',this)">Todos</div>
+      <div class="filter-btn verde" onclick="filterBuques('subida',this)">⬆️ Subida</div>
+      <div class="filter-btn" onclick="filterBuques('bajada',this)" style="--c:#2b5797">⬇️ Bajada</div>
+      <div class="filter-btn naranja" onclick="filterBuques('movimiento',this)">🔄 Movimiento</div>
     </div>
-    <div class="desp-body">
-      <div class="desp-practicos">
-        <div class="prac-chip"><div class="chip-pos">1</div><div class="chip-nombre">Correa Daniel</div><div class="chip-empresa">otra empresa</div><div class="chip-icon">🤝</div></div>
-        <div class="prac-chip"><div class="chip-pos">2</div><div class="chip-nombre">Sosa, Cristian</div><div class="chip-empresa">otra empresa</div><div class="chip-icon">🤝</div></div>
-      </div>
-      <div class="desp-datos">
-        <div class="dato-row"><span class="dato-label">Calado:</span><span class="dato-val">8,40 m</span></div>
-        <div class="dato-row"><span class="dato-label">Inicio:</span><span class="dato-val">24/06 – 14:00 (Rada S.L. vía EM)</span></div>
-        <div class="dato-row"><span class="dato-label">Baja Pco 1:</span><span class="dato-val">25/06 – 08:00 en Escobar</span></div>
-        <div class="dato-row"><span class="dato-label">Arribo Pco 2:</span><span class="dato-val">25/06 – 13:30 en ZC</span></div>
-      </div>
+    <div class="sort-bar">
+      <span class="sort-label">Ordenar:</span>
+      <div class="sort-btn active" onclick="sortBuques('hora',this)">Por hora</div>
+      <div class="sort-btn" onclick="sortBuques('nombre',this)">A–Z buque</div>
     </div>
   </div>
 
-  <div class="desp-card">
-    <div class="desp-head bajada">
-      <div><div class="desp-buque">KISO</div><div class="desp-meta">ISA · Panamá</div></div>
-      <span class="badge b-azul">🌊 TRA</span>
-    </div>
-    <div class="desp-body">
-      <div class="desp-practicos">
-        <div class="prac-chip"><div class="chip-pos">1</div><div class="chip-nombre">Llambias, Javier</div><div class="chip-empresa">MULTIPAR</div><div class="chip-icon">👤</div></div>
-        <div class="prac-chip"><div class="chip-pos">2</div><div class="chip-nombre">Casanova, Diego</div><div class="chip-empresa">MULTIPAR</div><div class="chip-icon">👤</div></div>
+  <div id="listaBuquesDesp">
+    <div class="desp-card" data-tipo="bajada" data-hora="1400" data-nombre="PHILLIP BAY">
+      <div class="desp-head bajada">
+        <div><div class="desp-buque">PHILLIP BAY</div><div class="desp-meta">ISA · Islas Marshall · 24/06 – 14:00</div></div>
+        <span class="badge b-azul">🌊 TRA</span>
       </div>
-      <div class="desp-datos">
-        <div class="dato-row"><span class="dato-label">Calado:</span><span class="dato-val">9,20 m</span></div>
-        <div class="dato-row"><span class="dato-label">Inicio:</span><span class="dato-val">24/06 – 20:30 (Rada S.L. vía EM)</span></div>
-        <div class="dato-row"><span class="dato-label">Baja Pco 1:</span><span class="dato-val">San Nicolás (estimado)</span></div>
-        <div class="dato-row"><span class="dato-label">Arribo Pco 2:</span><span class="dato-val">ZEYA</span></div>
+      <div class="desp-body">
+        <div class="desp-practicos">
+          <div class="prac-chip"><div class="chip-pos">1</div><div class="chip-nombre">Correa Daniel</div><div class="chip-empresa">otra empresa</div><div class="chip-icon">🤝</div></div>
+          <div class="prac-chip"><div class="chip-pos">2</div><div class="chip-nombre">Sosa, Cristian</div><div class="chip-empresa">otra empresa</div><div class="chip-icon">🤝</div></div>
+        </div>
+        <div class="desp-datos">
+          <div class="dato-row"><span class="dato-label">Calado:</span><span class="dato-val">8,40 m</span></div>
+          <div class="dato-row"><span class="dato-label">Inicio:</span><span class="dato-val">24/06 – 14:00 (Rada S.L. vía EM)</span></div>
+          <div class="dato-row"><span class="dato-label">Baja Pco 1:</span><span class="dato-val">25/06 – 08:00 en Escobar</span></div>
+          <div class="dato-row"><span class="dato-label">Arribo Pco 2:</span><span class="dato-val">25/06 – 13:30 en ZC</span></div>
+        </div>
       </div>
     </div>
+    <div class="desp-card" data-tipo="bajada" data-hora="2030" data-nombre="KISO">
+      <div class="desp-head bajada">
+        <div><div class="desp-buque">KISO</div><div class="desp-meta">ISA · Panamá · 24/06 – 20:30</div></div>
+        <span class="badge b-azul">🌊 TRA</span>
+      </div>
+      <div class="desp-body">
+        <div class="desp-practicos">
+          <div class="prac-chip"><div class="chip-pos">1</div><div class="chip-nombre">Llambias, Javier</div><div class="chip-empresa">MULTIPAR</div><div class="chip-icon">👤</div></div>
+          <div class="prac-chip"><div class="chip-pos">2</div><div class="chip-nombre">Casanova, Diego</div><div class="chip-empresa">MULTIPAR</div><div class="chip-icon">👤</div></div>
+        </div>
+        <div class="desp-datos">
+          <div class="dato-row"><span class="dato-label">Calado:</span><span class="dato-val">9,20 m</span></div>
+          <div class="dato-row"><span class="dato-label">Inicio:</span><span class="dato-val">24/06 – 20:30 (Rada S.L. vía EM)</span></div>
+          <div class="dato-row"><span class="dato-label">Baja Pco 1:</span><span class="dato-val">San Nicolás (estimado)</span></div>
+          <div class="dato-row"><span class="dato-label">Arribo Pco 2:</span><span class="dato-val">ZEYA</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="empty" id="emptyBuques" style="display:none">Sin resultados</div>
   </div>
-
-  <div class="div-title">🔄 Movimientos — Despachados</div>
-  <div class="vacio" style="border-color:#b4530950">Sin movimientos activos</div>
 </div>
 
 <!-- ══ PREVISTOS ══ -->
 <div class="section" id="sec-previstos">
-  <div class="card" style="margin-top:10px">
-    <div class="leyenda">
+
+  <div class="filter-bar" style="margin-top:10px">
+    <div class="filter-row">
+      <div class="filter-btn active" onclick="filterPrev('todos',this)">Todos</div>
+      <div class="filter-btn verde" onclick="filterPrev('subida',this)">⬆️ Subida</div>
+      <div class="filter-btn" onclick="filterPrev('bajada',this)">⬇️ Bajada</div>
+      <div class="filter-btn naranja" onclick="filterPrev('movimiento',this)">🔄 Campana/Zárate</div>
+      <div class="filter-btn" onclick="filterPrev('autorizado',this)">✅ AUT</div>
+      <div class="filter-btn" onclick="filterPrev('posible',this)">⚠️ Pos.AUT</div>
+    </div>
+    <div class="filter-search">
+      <span>🔍</span>
+      <input type="text" id="prevSearch" placeholder="Buscar buque o agencia..." oninput="searchPrev(this.value)">
+    </div>
+    <div class="sort-bar">
+      <span class="sort-label">Ordenar:</span>
+      <div class="sort-btn active" onclick="sortPrev('hora',this)">Por hora</div>
+      <div class="sort-btn" onclick="sortPrev('nombre',this)">A–Z buque</div>
+      <div class="sort-btn" onclick="sortPrev('agencia',this)">Por agencia</div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:8px">
+    <div class="leyenda" style="border-radius:8px;border:0.5px solid var(--borde)">
       <div class="ley-item"><span style="color:var(--verde);font-weight:700">■</span> Autorizado</div>
-      <div class="ley-item"><span style="color:var(--naranja);font-weight:700">■</span> Pos. AUT</div>
+      <div class="ley-item"><span style="color:var(--naranja);font-weight:700">■</span> Pos.AUT</div>
       <div class="ley-item"><span style="color:var(--gris3);font-weight:700">■</span> Sin confirmar</div>
-      <div class="ley-item">○ / ✓ Agencia contactada</div>
+      <div class="ley-item">○/✓ Agencia contactada</div>
     </div>
   </div>
 
-  <div class="div-title">⬆️ Subida — Previstos</div>
-
-  <div class="buque-row posible">
-    <div class="buque-top"><div class="buque-nombre">ULTRA ESTERHAZY</div><div class="buque-cf">CF 95</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-    <div class="buque-bottom">
-      <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-      <div class="buque-dato"><span>Calado</span><strong>7,20 m</strong></div>
-      <div class="buque-dato"><span>Pedido</span><strong>22/06 – AM</strong></div>
-      <div class="buque-dato"><span>Destino</span><strong>Rada Pta. Alvear</strong></div>
+  <div id="listaPrevistos">
+    <div class="buque-row posible" data-tipo="subida" data-nombre="ULTRA ESTERHAZY" data-agencia="ISA" data-hora="220600" data-estado="posible">
+      <div class="buque-top"><div class="buque-nombre">ULTRA ESTERHAZY</div><div class="buque-cf">CF 95</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
+      <div class="buque-bottom">
+        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
+        <div class="buque-dato"><span>Calado</span><strong>7,20 m</strong></div>
+        <div class="buque-dato"><span>Pedido</span><strong>22/06 – AM</strong></div>
+        <div class="buque-dato"><span>Destino</span><strong>Rada Pta. Alvear</strong></div>
+      </div>
+      <div class="buque-obs">⚠️ Pos. AUT — 2 prácticos vía Martín García.</div>
     </div>
-    <div class="buque-obs">⚠️ Pos. AUT — 2 prácticos vía Martín García.</div>
-  </div>
-
-  <div class="buque-row posible">
-    <div class="buque-top"><div class="buque-nombre">MAJESTIC VERA</div><div class="buque-cf">CF 100</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-    <div class="buque-bottom">
-      <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-      <div class="buque-dato"><span>Calado</span><strong>6,50 m</strong></div>
-      <div class="buque-dato"><span>Pedido</span><strong>22/06 – 14:00</strong></div>
-      <div class="buque-dato"><span>Destino</span><strong>San Lorenzo</strong></div>
+    <div class="buque-row posible" data-tipo="subida" data-nombre="MAJESTIC VERA" data-agencia="ISA" data-hora="221400" data-estado="posible">
+      <div class="buque-top"><div class="buque-nombre">MAJESTIC VERA</div><div class="buque-cf">CF 100</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
+      <div class="buque-bottom">
+        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
+        <div class="buque-dato"><span>Calado</span><strong>6,50 m</strong></div>
+        <div class="buque-dato"><span>Pedido</span><strong>22/06 – 14:00</strong></div>
+        <div class="buque-dato"><span>Destino</span><strong>San Lorenzo</strong></div>
+      </div>
+      <div class="buque-obs">⚠️ Pos. AUT — aguarda determinante.</div>
     </div>
-    <div class="buque-obs">⚠️ Pos. AUT — aguarda determinante.</div>
-  </div>
-
-  <div class="buque-row autorizado">
-    <div class="buque-top"><div class="buque-nombre">LOLITA</div><div class="buque-cf">CF 107</div><div class="buque-tilde ok">✓</div></div>
-    <div class="buque-bottom">
-      <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-      <div class="buque-dato"><span>Calado</span><strong>6,30 m</strong></div>
-      <div class="buque-dato"><span>Pedido</span><strong>25/06 – PM</strong></div>
-      <div class="buque-dato"><span>Destino</span><strong>Rada S.L. "Centro"</strong></div>
+    <div class="buque-row autorizado" data-tipo="subida" data-nombre="LOLITA" data-agencia="ISA" data-hora="252358" data-estado="autorizado">
+      <div class="buque-top"><div class="buque-nombre">LOLITA</div><div class="buque-cf">CF 107</div><div class="buque-tilde ok">✓</div></div>
+      <div class="buque-bottom">
+        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
+        <div class="buque-dato"><span>Calado</span><strong>6,30 m</strong></div>
+        <div class="buque-dato"><span>Pedido</span><strong>25/06 – PM</strong></div>
+        <div class="buque-dato"><span>Destino</span><strong>Rada S.L. "Centro"</strong></div>
+      </div>
+      <div class="buque-obs">✅ Autorizado — agencia contactada.</div>
     </div>
-    <div class="buque-obs">✅ Autorizado — agencia contactada.</div>
-  </div>
-
-  <div class="buque-row">
-    <div class="buque-top"><div class="buque-nombre">SOLAR RUO YUN</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-    <div class="buque-bottom">
-      <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-      <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
-      <div class="buque-dato"><span>Pedido</span><strong>25/06 – 10:00</strong></div>
-      <div class="buque-dato"><span>Destino</span><strong>San Lorenzo</strong></div>
+    <div class="buque-row" data-tipo="subida" data-nombre="SOLAR RUO YUN" data-agencia="ISA" data-hora="251000" data-estado="sin">
+      <div class="buque-top"><div class="buque-nombre">SOLAR RUO YUN</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
+      <div class="buque-bottom">
+        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
+        <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
+        <div class="buque-dato"><span>Pedido</span><strong>25/06 – 10:00</strong></div>
+        <div class="buque-dato"><span>Destino</span><strong>San Lorenzo</strong></div>
+      </div>
     </div>
-  </div>
-
-  <div class="buque-row">
-    <div class="buque-top"><div class="buque-nombre">GREAT MIND</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-    <div class="buque-bottom">
-      <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-      <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
-      <div class="buque-dato"><span>Pedido</span><strong>30/06 – 20:00</strong></div>
-      <div class="buque-dato"><span>Destino</span><strong>San Lorenzo</strong></div>
+    <div class="buque-row" data-tipo="subida" data-nombre="GREAT MIND" data-agencia="ISA" data-hora="302000" data-estado="sin">
+      <div class="buque-top"><div class="buque-nombre">GREAT MIND</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
+      <div class="buque-bottom">
+        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
+        <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
+        <div class="buque-dato"><span>Pedido</span><strong>30/06 – 20:00</strong></div>
+        <div class="buque-dato"><span>Destino</span><strong>San Lorenzo</strong></div>
+      </div>
     </div>
-  </div>
-
-  <div class="div-title">⬇️ Bajada — Previstos</div>
-
-  <div class="buque-row">
-    <div class="buque-top"><div class="buque-nombre">HYDE PARK</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-    <div class="buque-bottom">
-      <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-      <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
-      <div class="buque-dato"><span>Pedido</span><strong>23/06 – 18:00</strong></div>
-      <div class="buque-dato"><span>Ruta</span><strong>Rada S.L. → ZEYA vía EM</strong></div>
+    <div class="buque-row" data-tipo="bajada" data-nombre="HYDE PARK" data-agencia="ISA" data-hora="231800" data-estado="sin">
+      <div class="buque-top"><div class="buque-nombre">HYDE PARK</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
+      <div class="buque-bottom">
+        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
+        <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
+        <div class="buque-dato"><span>Pedido</span><strong>23/06 – 18:00</strong></div>
+        <div class="buque-dato"><span>Ruta</span><strong>Rada S.L. → ZEYA vía EM</strong></div>
+      </div>
     </div>
-  </div>
-
-  <div class="buque-row posible">
-    <div class="buque-top"><div class="buque-nombre">SC DALLAS</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-    <div class="buque-bottom">
-      <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-      <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
-      <div class="buque-dato"><span>Pedido</span><strong>24/06 – 14:00</strong></div>
-      <div class="buque-dato"><span>Ruta</span><strong>Rada Rosario → ZEYA</strong></div>
+    <div class="buque-row posible" data-tipo="bajada" data-nombre="SC DALLAS" data-agencia="ISA" data-hora="241400" data-estado="posible">
+      <div class="buque-top"><div class="buque-nombre">SC DALLAS</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
+      <div class="buque-bottom">
+        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
+        <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
+        <div class="buque-dato"><span>Pedido</span><strong>24/06 – 14:00</strong></div>
+        <div class="buque-dato"><span>Ruta</span><strong>Rada Rosario → ZEYA</strong></div>
+      </div>
+      <div class="buque-obs">⚠️ Pos. AUT — aguarda GFH.</div>
     </div>
-    <div class="buque-obs">⚠️ Pos. AUT — aguarda GFH.</div>
-  </div>
-
-  <div class="buque-row">
-    <div class="buque-top"><div class="buque-nombre">CHEMROAD HOPE</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-    <div class="buque-bottom">
-      <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-      <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
-      <div class="buque-dato"><span>Pedido</span><strong>25/06 – 14:00</strong></div>
-      <div class="buque-dato"><span>Ruta</span><strong>Rada S.L. → ZEYA vía EM</strong></div>
+    <div class="buque-row" data-tipo="bajada" data-nombre="CHEMROAD HOPE" data-agencia="ISA" data-hora="251400" data-estado="sin">
+      <div class="buque-top"><div class="buque-nombre">CHEMROAD HOPE</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
+      <div class="buque-bottom">
+        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
+        <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
+        <div class="buque-dato"><span>Pedido</span><strong>25/06 – 14:00</strong></div>
+        <div class="buque-dato"><span>Ruta</span><strong>Rada S.L. → ZEYA vía EM</strong></div>
+      </div>
     </div>
-  </div>
-
-  <div class="div-title">🔄 Campana / Zárate — Previstos</div>
-
-  <div class="buque-row">
-    <div class="buque-top"><div class="buque-nombre">PAX MUNDI</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-    <div class="buque-bottom">
-      <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-      <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
-      <div class="buque-dato"><span>Pedido</span><strong>25/06 – 10:00</strong></div>
-      <div class="buque-dato"><span>Ruta</span><strong>Rada Sn. Nicolás → ZEYA</strong></div>
+    <div class="buque-row movimiento" data-tipo="movimiento" data-nombre="PAX MUNDI" data-agencia="ISA" data-hora="251000" data-estado="sin">
+      <div class="buque-top"><div class="buque-nombre">PAX MUNDI</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
+      <div class="buque-bottom">
+        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
+        <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
+        <div class="buque-dato"><span>Pedido</span><strong>25/06 – 10:00</strong></div>
+        <div class="buque-dato"><span>Ruta</span><strong>Rada Sn. Nicolás → ZEYA</strong></div>
+      </div>
     </div>
-  </div>
-
-  <div class="buque-row">
-    <div class="buque-top"><div class="buque-nombre">FABIA SCHULTE</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-    <div class="buque-bottom">
-      <div class="buque-dato"><span>Agencia</span><strong>Singapur</strong></div>
-      <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
-      <div class="buque-dato"><span>Pedido</span><strong>28/06 – 10:00</strong></div>
-      <div class="buque-dato"><span>Ruta</span><strong>Rada Sn. Nicolás → Rada S.L. Norte</strong></div>
+    <div class="buque-row movimiento" data-tipo="movimiento" data-nombre="FABIA SCHULTE" data-agencia="SINGAPUR" data-hora="281000" data-estado="sin">
+      <div class="buque-top"><div class="buque-nombre">FABIA SCHULTE</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
+      <div class="buque-bottom">
+        <div class="buque-dato"><span>Agencia</span><strong>Singapur</strong></div>
+        <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
+        <div class="buque-dato"><span>Pedido</span><strong>28/06 – 10:00</strong></div>
+        <div class="buque-dato"><span>Ruta</span><strong>Rada Sn. Nicolás → Rada S.L. Norte</strong></div>
+      </div>
     </div>
+    <div class="empty" id="emptyPrev" style="display:none">Sin resultados para este filtro</div>
   </div>
 </div>
 
 <!-- ══ NOVEDADES ══ -->
 <div class="section" id="sec-novedades">
-  <div class="card" style="margin-top:10px">
+
+  <div class="filter-bar" style="margin-top:10px">
+    <div class="filter-row">
+      <div class="filter-btn active" onclick="filterNov('todos',this)">Todos</div>
+      <div class="filter-btn rojo" onclick="filterNov('trafico',this)">🚦 Tráfico</div>
+      <div class="filter-btn naranja" onclick="filterNov('turno',this)">📋 Turno</div>
+      <div class="filter-btn verde" onclick="filterNov('permanente',this)">📌 Permanentes</div>
+    </div>
+    <div class="sort-bar">
+      <span class="sort-label">Ordenar:</span>
+      <div class="sort-btn active" onclick="sortNov('reciente',this)">Más reciente</div>
+      <div class="sort-btn" onclick="sortNov('permanente',this)">Permanentes primero</div>
+    </div>
+  </div>
+
+  <div class="card">
     <div class="card-head"><span>⚓</span><span class="card-head-title">Determinantes</span><span class="card-head-count">23/06</span></div>
     <div class="det-row"><span class="det-label">Canal Pta. Indio <span class="det-km">152,8</span></span><span class="det-val det-ok">10,40 m</span></div>
     <div class="det-row"><span class="det-label">Canal Intermedio <span class="det-km">112,4</span></span><span class="det-val det-ok">10,60 m</span></div>
@@ -507,68 +621,59 @@ body{font-family:system-ui,-apple-system,sans-serif;font-size:13px;background:#e
     <div class="det-row"><span class="det-label">Canal E. Mitre <span class="det-km">47,9</span></span><span class="det-val det-ok">10,60 m</span></div>
   </div>
 
-  <div class="card">
-    <div class="card-head"><span>🚦</span><span class="card-head-title">Obs. de tráfico</span><span class="card-head-count">24/06 13:57</span></div>
-    <div class="obs-item">
-      <span class="obs-tag tag-rojo">Reserva de canal</span>
+  <div class="card" id="listaNov">
+    <div class="obs-item" data-tipo="trafico" data-orden="1">
+      <span class="obs-tag tag-rojo">🚦 Reserva de canal</span>
       <div class="obs-texto">Entrada metanero KOOL GLACIER — 25/1800 del Par 30 al Km 239.</div>
       <div class="obs-fecha">24/06 – 13:14</div>
     </div>
-    <div class="obs-item">
-      <span class="obs-tag tag-naranja">Regulación</span>
+    <div class="obs-item" data-tipo="trafico" data-orden="2">
+      <span class="obs-tag tag-naranja">🚦 Regulación</span>
       <div class="obs-texto">Salida metanero AL SAKHAMAH — ETD Escobar 24/2345 (a confirmar).</div>
       <div class="obs-fecha">24/06 – 13:57</div>
     </div>
-  </div>
-
-  <div class="card">
-    <div class="card-head"><span>📋</span><span class="card-head-title">Pizarra del turno</span><span style="font-size:9.5px;color:var(--gris3)">novedades recientes</span></div>
-    <div class="obs-item">
-      <span class="obs-tag tag-azul">Cambio de turno</span>
+    <div class="obs-item" data-tipo="turno" data-orden="3">
+      <span class="obs-tag tag-azul">📋 Cambio de turno</span>
       <div class="obs-texto">Slutzky cambia con Sanguinetti el 01/07/2026.</div>
       <div class="obs-fecha">24/06 – 07:12</div>
     </div>
-    <div class="obs-item">
-      <span class="obs-tag tag-naranja">Logística</span>
+    <div class="obs-item" data-tipo="turno" data-orden="4">
+      <span class="obs-tag tag-naranja">📋 Logística</span>
       <div class="obs-texto">ULTRA ESTERHAZY — dejan sobre en Lanchas del Este para que embarquen los prácticos.</div>
       <div class="obs-fecha">24/06 – 08:30</div>
     </div>
-    <div class="obs-item">
-      <span class="obs-tag" style="background:#fde8e8;color:#991b1b">Voucher a bordo</span>
-      <div class="obs-texto">Leguizamón olvidó voucher en el KISO. Foto enviada. Recordar a los prácticos de bajada que lo retiren.</div>
+    <div class="obs-item" data-tipo="turno" data-orden="5">
+      <span class="obs-tag tag-rojo">📋 Voucher a bordo</span>
+      <div class="obs-texto">Leguizamón olvidó voucher en el KISO. Recordar a los prácticos de bajada que lo retiren.</div>
       <div class="obs-fecha">24/06 – 09:15</div>
     </div>
-    <div class="obs-item">
-      <span class="obs-tag tag-verde">Lancha Campana</span>
+    <div class="obs-item" data-tipo="turno" data-orden="6">
+      <span class="obs-tag tag-verde">📋 Lancha Campana</span>
       <div class="obs-texto">Solicitar servicio con mínimo 4 horas de anticipación.</div>
       <div class="obs-fecha">24/06 – 06:00</div>
     </div>
-  </div>
-
-  <div class="card">
-    <div class="card-head"><span>📌</span><span class="card-head-title">Novedades permanentes</span><span style="font-size:9.5px;color:var(--gris3)">vigentes</span></div>
-    <div class="obs-item">
-      <span class="obs-tag tag-rojo">PAE Campana</span>
+    <div class="obs-item" data-tipo="permanente" data-orden="10">
+      <span class="obs-tag tag-rojo">📌 PAE Campana</span>
       <div class="obs-texto">Autos no ingresan al predio. Traslado desde la barrera al buque.</div>
       <div class="obs-fecha">Vigente desde 15/10</div>
     </div>
-    <div class="obs-item">
-      <span class="obs-tag tag-azul">SIDERCA (CPNA)</span>
+    <div class="obs-item" data-tipo="permanente" data-orden="11">
+      <span class="obs-tag tag-azul">📌 SIDERCA (CPNA)</span>
       <div class="obs-texto">Embarco exclusivamente por lancha. No se puede embarcar por tierra.</div>
       <div class="obs-fecha">Vigente desde 23/09</div>
     </div>
-    <div class="obs-item">
-      <span class="obs-tag tag-naranja">Salida de turno</span>
+    <div class="obs-item" data-tipo="permanente" data-orden="12">
+      <span class="obs-tag tag-naranja">📌 Salida de turno</span>
       <div class="obs-texto">Salidas sin fecha de reingreso deben avisarse 12 hs antes del turno.</div>
       <div class="obs-fecha">Disposición vigente</div>
     </div>
-    <div class="obs-item">
-      <span class="obs-tag tag-verde">Subidas vía Martín García</span>
+    <div class="obs-item" data-tipo="permanente" data-orden="13">
+      <span class="obs-tag tag-verde">📌 Subidas vía Martín García</span>
       <div class="obs-texto">Destino T. del Guazú / Km. 171 RPG se despacha con 2 prácticos.</div>
       <div class="obs-fecha">Vigente desde 01/04</div>
     </div>
-    <div class="obs-item">
-      <span class="obs-tag tag-azul">Lancha Escobar</span>
+    <div class="obs-item" data-tipo="permanente" data-orden="14">
+      <span class="obs-tag tag-azul">📌 Lancha Escobar</span>
       <div class="obs-texto">Nuevo celular: 3489-511953</div>
       <div class="obs-fecha">Actualizado</div>
     </div>
@@ -579,26 +684,13 @@ body{font-family:system-ui,-apple-system,sans-serif;font-size:13px;background:#e
 <div class="section" id="sec-info">
   <div class="card" style="margin-top:10px">
     <div class="card-head"><span>🔗</span><span class="card-head-title">Links de consulta</span></div>
-    <a class="link-row" href="https://www.hidro.gob.ar/oceanografia/pronostico.asp" target="_blank">
-      <div class="link-icon">🌊</div><div class="link-text"><div class="link-title">Alturas horarias — SHN</div><div class="link-url">hidro.gob.ar</div></div><span class="link-arrow">›</span>
-    </a>
-    <a class="link-row" href="https://contenidosweb.prefecturanaval.gob.ar/reserva/" target="_blank">
-      <div class="link-icon">🚨</div><div class="link-text"><div class="link-title">Reservas de canal — PNA</div><div class="link-url">prefecturanaval.gob.ar</div></div><span class="link-arrow">›</span>
-    </a>
-    <a class="link-row" href="https://www.argentina.gob.ar/transporte/puertos-vias-navegables-y-marina-mercante/planillas-de-determinantes/2024" target="_blank">
-      <div class="link-icon">📊</div><div class="link-text"><div class="link-title">Planillas de determinantes</div><div class="link-url">argentina.gob.ar</div></div><span class="link-arrow">›</span>
-    </a>
-    <a class="link-row" href="https://www.comisionriodelaplata.org/vientosymareas.php" target="_blank">
-      <div class="link-icon">💨</div><div class="link-text"><div class="link-title">Vientos y mareas — CRP</div><div class="link-url">comisionriodelaplata.org</div></div><span class="link-arrow">›</span>
-    </a>
-    <a class="link-row" href="https://ltkprac.riopar.com.ar/LTKPracticaje/" target="_blank">
-      <div class="link-icon">⚓</div><div class="link-text"><div class="link-title">LTKPrac — Sistema Guardia</div><div class="link-url">ltkprac.riopar.com.ar</div></div><span class="link-arrow">›</span>
-    </a>
-    <a class="link-row" href="https://ripla.sofmicsystems.com/operaciones/Default.aspx" target="_blank">
-      <div class="link-icon">🗺️</div><div class="link-text"><div class="link-title">RIPLA — Río de la Plata</div><div class="link-url">ripla.sofmicsystems.com</div></div><span class="link-arrow">›</span>
-    </a>
+    <a class="link-row" href="https://www.hidro.gob.ar/oceanografia/pronostico.asp" target="_blank"><div class="link-icon">🌊</div><div class="link-text"><div class="link-title">Alturas horarias — SHN</div><div class="link-url">hidro.gob.ar</div></div><span style="color:var(--gris3)">›</span></a>
+    <a class="link-row" href="https://contenidosweb.prefecturanaval.gob.ar/reserva/" target="_blank"><div class="link-icon">🚨</div><div class="link-text"><div class="link-title">Reservas de canal — PNA</div><div class="link-url">prefecturanaval.gob.ar</div></div><span style="color:var(--gris3)">›</span></a>
+    <a class="link-row" href="https://www.argentina.gob.ar/transporte/puertos-vias-navegables-y-marina-mercante/planillas-de-determinantes/2024" target="_blank"><div class="link-icon">📊</div><div class="link-text"><div class="link-title">Planillas de determinantes</div><div class="link-url">argentina.gob.ar</div></div><span style="color:var(--gris3)">›</span></a>
+    <a class="link-row" href="https://www.comisionriodelaplata.org/vientosymareas.php" target="_blank"><div class="link-icon">💨</div><div class="link-text"><div class="link-title">Vientos y mareas — CRP</div><div class="link-url">comisionriodelaplata.org</div></div><span style="color:var(--gris3)">›</span></a>
+    <a class="link-row" href="https://ltkprac.riopar.com.ar/LTKPracticaje/" target="_blank"><div class="link-icon">⚓</div><div class="link-text"><div class="link-title">LTKPrac — Sistema Guardia</div><div class="link-url">ltkprac.riopar.com.ar</div></div><span style="color:var(--gris3)">›</span></a>
+    <a class="link-row" href="https://ripla.sofmicsystems.com/operaciones/Default.aspx" target="_blank"><div class="link-icon">🗺️</div><div class="link-text"><div class="link-title">RIPLA — Río de la Plata</div><div class="link-url">ripla.sofmicsystems.com</div></div><span style="color:var(--gris3)">›</span></a>
   </div>
-
   <div class="card">
     <div class="card-head"><span>📞</span><span class="card-head-title">Teléfonos de servicio</span></div>
     <div class="sec-label">Lanchas</div>
@@ -619,6 +711,7 @@ body{font-family:system-ui,-apple-system,sans-serif;font-size:13px;background:#e
 </div>
 
 <script>
+// ── TAB NAV ──────────────────────────────────────────────────────
 function showTab(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
@@ -627,9 +720,192 @@ function showTab(id){
   document.querySelectorAll('.nav-tab')[tabs[id]].classList.add('active');
   window.scrollTo(0,0);
 }
+
+// ── TOGGLE TILDE ──────────────────────────────────────────────────
 function toggle(el){
   el.classList.toggle('ok');
   el.textContent=el.classList.contains('ok')?'✓':'○';
+}
+
+// ── GLOBAL SEARCH ─────────────────────────────────────────────────
+function globalSearch(q){
+  const clear=document.getElementById('searchClear');
+  clear.style.display=q?'block':'none';
+  q=q.toLowerCase().trim();
+  if(!q){
+    document.querySelectorAll('.prac-row,.franco-row,.varios-row,.desp-card,.buque-row,.obs-item').forEach(el=>el.classList.remove('hidden'));
+    return;
+  }
+  // buscar en turno
+  document.querySelectorAll('#listaTurno .prac-row').forEach(el=>{
+    const nom=el.dataset.nombre||'';
+    el.classList.toggle('hidden',!nom.toLowerCase().includes(q));
+  });
+  document.querySelectorAll('#listaFrancos .franco-row').forEach(el=>{
+    const nom=el.dataset.nombre||'';
+    el.classList.toggle('hidden',!nom.toLowerCase().includes(q));
+  });
+  // buques
+  document.querySelectorAll('#listaBuquesDesp .desp-card').forEach(el=>{
+    const nom=el.dataset.nombre||'';
+    el.classList.toggle('hidden',!nom.toLowerCase().includes(q));
+  });
+  document.querySelectorAll('#listaPrevistos .buque-row').forEach(el=>{
+    const nom=(el.dataset.nombre||'')+' '+(el.dataset.agencia||'');
+    el.classList.toggle('hidden',!nom.toLowerCase().includes(q));
+  });
+  // mostrar tab turno si hay resultados ahí
+  showTab('turno');
+}
+function clearSearch(){
+  document.getElementById('globalSearch').value='';
+  document.getElementById('searchClear').style.display='none';
+  globalSearch('');
+}
+
+// ── TURNO FILTERS ─────────────────────────────────────────────────
+let turnoFiltro='todos';
+function filterTurno(f,btn){
+  turnoFiltro=f;
+  document.querySelectorAll('.filter-bar .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyTurnoFilter();
+}
+function applyTurnoFilter(){
+  const q=(document.getElementById('turnoSearch').value||'').toLowerCase();
+  // turno activo
+  document.querySelectorAll('#listaTurno .prac-row').forEach(el=>{
+    const tipos=el.dataset.tipo||'';
+    const nom=(el.dataset.nombre||'').toLowerCase();
+    const tipoOk=turnoFiltro==='todos'||tipos.includes(turnoFiltro);
+    const qOk=!q||nom.includes(q);
+    el.classList.toggle('hidden',!(tipoOk&&qOk));
+  });
+  // francos
+  const showFrancos=turnoFiltro==='todos'||turnoFiltro==='franco'||turnoFiltro==='cambio';
+  document.getElementById('cardFrancos').style.display=showFrancos?'':'none';
+  if(showFrancos){
+    document.querySelectorAll('#listaFrancos .franco-row').forEach(el=>{
+      const tipos=el.dataset.tipo||'';
+      const nom=(el.dataset.nombre||'').toLowerCase();
+      const tipoOk=turnoFiltro==='todos'||tipos.includes(turnoFiltro);
+      const qOk=!q||nom.includes(q);
+      el.classList.toggle('hidden',!(tipoOk&&qOk));
+    });
+  }
+  // varios
+  const showVarios=turnoFiltro==='todos'||turnoFiltro==='varios';
+  document.getElementById('cardVarios').style.display=showVarios?'':'none';
+}
+function searchTurno(q){ applyTurnoFilter(); }
+
+function sortTurno(by,btn){
+  document.querySelectorAll('.sort-bar .sort-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const lista=document.getElementById('listaTurno');
+  const rows=[...lista.querySelectorAll('.prac-row')];
+  rows.sort((a,b)=>{
+    if(by==='alfa') return (a.dataset.nombre||'').localeCompare(b.dataset.nombre||'');
+    if(by==='hora') return (a.dataset.hora||'').localeCompare(b.dataset.hora||'');
+    return parseInt(a.dataset.pos||0)-parseInt(b.dataset.pos||0);
+  });
+  rows.forEach(r=>lista.appendChild(r));
+}
+
+// ── BUQUES FILTERS ────────────────────────────────────────────────
+let buquesFiltro='todos';
+function filterBuques(f,btn){
+  buquesFiltro=f;
+  document.querySelectorAll('#sec-buques .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyBuquesFilter();
+}
+function applyBuquesFilter(){
+  let visible=0;
+  document.querySelectorAll('#listaBuquesDesp .desp-card').forEach(el=>{
+    const tipo=el.dataset.tipo||'';
+    const ok=buquesFiltro==='todos'||tipo===buquesFiltro;
+    el.classList.toggle('hidden',!ok);
+    if(ok) visible++;
+  });
+  document.getElementById('emptyBuques').style.display=visible?'none':'block';
+}
+function sortBuques(by,btn){
+  document.querySelectorAll('#sec-buques .sort-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const lista=document.getElementById('listaBuquesDesp');
+  const cards=[...lista.querySelectorAll('.desp-card')];
+  cards.sort((a,b)=>{
+    if(by==='nombre') return (a.dataset.nombre||'').localeCompare(b.dataset.nombre||'');
+    return (a.dataset.hora||'').localeCompare(b.dataset.hora||'');
+  });
+  cards.forEach(c=>lista.appendChild(c));
+}
+
+// ── PREVISTOS FILTERS ─────────────────────────────────────────────
+let prevFiltro='todos'; let prevSearch='';
+function filterPrev(f,btn){
+  prevFiltro=f;
+  document.querySelectorAll('#sec-previstos .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyPrevFilter();
+}
+function searchPrev(q){ prevSearch=q.toLowerCase(); applyPrevFilter(); }
+function applyPrevFilter(){
+  let visible=0;
+  document.querySelectorAll('#listaPrevistos .buque-row').forEach(el=>{
+    const tipo=el.dataset.tipo||'';
+    const estado=el.dataset.estado||'';
+    const nom=((el.dataset.nombre||'')+' '+(el.dataset.agencia||'')).toLowerCase();
+    const tipoOk=prevFiltro==='todos'||tipo===prevFiltro||estado===prevFiltro;
+    const qOk=!prevSearch||nom.includes(prevSearch);
+    const ok=tipoOk&&qOk;
+    el.classList.toggle('hidden',!ok);
+    if(ok) visible++;
+  });
+  document.getElementById('emptyPrev').style.display=visible?'none':'block';
+}
+function sortPrev(by,btn){
+  document.querySelectorAll('#sec-previstos .sort-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const lista=document.getElementById('listaPrevistos');
+  const rows=[...lista.querySelectorAll('.buque-row')];
+  rows.sort((a,b)=>{
+    if(by==='nombre') return (a.dataset.nombre||'').localeCompare(b.dataset.nombre||'');
+    if(by==='agencia') return (a.dataset.agencia||'').localeCompare(b.dataset.agencia||'');
+    return (a.dataset.hora||'').localeCompare(b.dataset.hora||'');
+  });
+  rows.forEach(r=>lista.appendChild(r));
+}
+
+// ── NOVEDADES FILTERS ─────────────────────────────────────────────
+let novFiltro='todos';
+function filterNov(f,btn){
+  novFiltro=f;
+  document.querySelectorAll('#sec-novedades .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyNovFilter();
+}
+function applyNovFilter(){
+  document.querySelectorAll('#listaNov .obs-item').forEach(el=>{
+    const tipo=el.dataset.tipo||'';
+    el.classList.toggle('hidden',novFiltro!=='todos'&&tipo!==novFiltro);
+  });
+}
+function sortNov(by,btn){
+  document.querySelectorAll('#sec-novedades .sort-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const lista=document.getElementById('listaNov');
+  const items=[...lista.querySelectorAll('.obs-item')];
+  items.sort((a,b)=>{
+    if(by==='permanente'){
+      const ap=a.dataset.tipo==='permanente'?0:1;
+      const bp=b.dataset.tipo==='permanente'?0:1;
+      return ap-bp||parseInt(a.dataset.orden)-parseInt(b.dataset.orden);
+    }
+    return parseInt(a.dataset.orden)-parseInt(b.dataset.orden);
+  });
+  items.forEach(i=>lista.appendChild(i));
 }
 </script>
 </body>
