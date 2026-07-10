@@ -5,10 +5,11 @@
  * GitHub Pages (Guardia_proyecto) lo consuma con fetch().
  *
  * INSTALACIÓN:
- * 1. Abrir la planilla "A - GUARDIA 2026" en Google Sheets.
- * 2. Extensiones → Apps Script.
- * 3. Borrar el contenido de Code.gs que venga por defecto y pegar este archivo entero.
- * 4. Implementar → Nueva implementación → tipo "Aplicación web".
+ * (Sirve tanto si este script está atado a la planilla vía Extensiones → Apps Script,
+ * como si es un proyecto independiente creado desde script.google.com — el código
+ * abre la planilla por su ID directamente, así que funciona en ambos casos.)
+ * 1. Pegar este archivo entero en Code.gs, reemplazando lo que haya.
+ * 2. Implementar → Nueva implementación → tipo "Aplicación web".
  *    - Ejecutar como: Yo (tu cuenta)
  *    - Quién tiene acceso: Cualquier usuario (para que la web pública pueda leerlo)
  * 5. Copiar la URL que te da (".../exec") y pasársela a Claude para wirear el frontend.
@@ -37,7 +38,7 @@ function doGet(e) {
       .setMimeType(ContentService.MimeType.JSON);
   }
 
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = SpreadsheetApp.openById('1AVrjPPJtLW0Rqon-4B4kOI9on49Wo7b7h8TR2UOBndo');
   var data = {
     actualizado: new Date().toISOString(),
     turno: parseGuardia(ss.getSheetByName('GUARDIA')),
