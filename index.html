@@ -235,6 +235,7 @@ mark{background:#fff3cd;border-radius:2px;padding:0 1px}
   <div class="nav-tab" onclick="showTab('buques')">🚢 Buques</div>
   <div class="nav-tab" onclick="showTab('previstos')">📋 Previstos</div>
   <div class="nav-tab" onclick="showTab('novedades')">📢 Novedades</div>
+  <div class="nav-tab" onclick="showTab('remises')">🚕 Remises</div>
   <div class="nav-tab" onclick="showTab('info')">🔗 Info</div>
 </div>
 
@@ -602,6 +603,10 @@ mark{background:#fff3cd;border-radius:2px;padding:0 1px}
       <div class="filter-btn naranja" onclick="filterNov('turno',this)">📋 Turno</div>
       <div class="filter-btn verde" onclick="filterNov('permanente',this)">📌 Permanentes</div>
     </div>
+    <div class="filter-search">
+      <span>🔍</span>
+      <input type="text" id="novSearch" placeholder="Buscar en novedades (autor o texto)...">
+    </div>
     <div class="sort-bar">
       <span class="sort-label">Ordenar:</span>
       <div class="sort-btn active" onclick="sortNov('reciente',this)">Más reciente</div>
@@ -680,6 +685,11 @@ mark{background:#fff3cd;border-radius:2px;padding:0 1px}
   </div>
 </div>
 
+<!-- ══ REMISES ══ -->
+<div class="section" id="sec-remises">
+  <div id="listaRemises" style="margin-top:10px"></div>
+</div>
+
 <!-- ══ INFO ══ -->
 <div class="section" id="sec-info">
   <div class="card" style="margin-top:10px">
@@ -716,7 +726,7 @@ function showTab(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('sec-'+id).classList.add('active');
-  const tabs={turno:0,buques:1,previstos:2,novedades:3,info:4};
+  const tabs={turno:0,buques:1,previstos:2,novedades:3,remises:4,info:5};
   document.querySelectorAll('.nav-tab')[tabs[id]].classList.add('active');
   window.scrollTo(0,0);
 }
@@ -908,5 +918,7 @@ function sortNov(by,btn){
   items.forEach(i=>lista.appendChild(i));
 }
 </script>
+<script src="assets/config.js"></script>
+<script src="assets/data-loader.js"></script>
 </body>
 </html>
