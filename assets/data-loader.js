@@ -11,10 +11,31 @@
     return String(str || '').replace(/\D/g, '');
   }
 
+  // ── ESTADO DE CARGA ──────────────────────────────────────────────
+  // El HTML arranca con "loading-skel" (puntitos animados) en vez de datos
+  // de ejemplo, para que nunca se confunda un placeholder con un dato real.
+  function ocultarBanner() {
+    var banner = document.getElementById('loadingBanner');
+    if (banner) banner.classList.add('oculto');
+    // Por si algún contenedor no hizo un innerHTML completo (ej. Buques),
+    // se limpia cualquier skeleton que haya quedado colgado.
+    document.querySelectorAll('.loading-skel').forEach(function (el) { el.remove(); });
+  }
+
+  function mostrarErrorBanner(msg) {
+    var banner = document.getElementById('loadingBanner');
+    if (banner) {
+      banner.classList.remove('oculto');
+      banner.classList.add('error');
+      banner.textContent = '⚠️ ' + msg;
+    }
+  }
+
   async function cargarDatos() {
     var url = window.GUARDIA_API_URL;
     if (!url || url.indexOf('PENDIENTE') === 0) {
       console.warn('Falta configurar GUARDIA_API_URL en assets/config.js');
+      mostrarErrorBanner('Falta configurar la conexión con la planilla.');
       return;
     }
     var clave = sessionStorage.getItem('mp_clave') || '';
@@ -22,7 +43,11 @@
     try {
       var resp = await fetch(urlConClave, { cache: 'no-store' });
       var data = await resp.json();
-      if (data.error) { console.error('Backend rechazó el acceso:', data.error); return; }
+      if (data.error) {
+        console.error('Backend rechazó el acceso:', data.error);
+        mostrarErrorBanner('No se pudo autenticar con la planilla. Reintentá recargando la página.');
+        return;
+      }
       renderTurno(data.turno);
       renderPrevistos(data.previstos);
       renderNovedades(data.novedades);
@@ -33,8 +58,10 @@
         var d = new Date(data.actualizado);
         fechaEl.textContent = '📅 Actualizado: ' + d.toLocaleDateString('es-AR') + ' — ' + d.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
       }
+      ocultarBanner();
     } catch (err) {
       console.error('Error cargando datos de guardia:', err);
+      mostrarErrorBanner('No se pudieron cargar los datos. Revisá tu conexión y recargá la página.');
     }
   }
 
