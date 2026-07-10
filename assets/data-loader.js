@@ -46,11 +46,11 @@
     if (!listaTurno || !listaFrancos) return;
 
     listaTurno.innerHTML = t.practicos.map(function (p, i) {
-      var claseNum = p.cambio ? 'prac-num cambio' : 'prac-num';
-      var claseNombre = p.cambio ? 'prac-nombre cambio' : 'prac-nombre';
+      // El asterisco de la planilla significa "el operador se comunicó con el práctico"
+      // (no un cambio de turno) — se muestra como una etiqueta discreta, sin recolorear el nombre.
       return '<div class="prac-row" data-tipo="turno' + (p.cambio ? ' cambio' : '') + '" data-nombre="' + esc(p.nombre) + '" data-pos="' + esc(p.pos) + '" data-hora="' + esc(soloDigitos(p.detalle)) + '">' +
-        '<div class="' + claseNum + '">' + esc(p.pos) + '</div>' +
-        '<div class="prac-info"><div class="' + claseNombre + '">' + esc(p.nombre) + '</div>' +
+        '<div class="prac-num">' + esc(p.pos) + '</div>' +
+        '<div class="prac-info"><div class="prac-nombre">' + esc(p.nombre) + (p.cambio ? ' <span class="badge b-verde" style="font-size:9px;vertical-align:middle">📞 Contactado</span>' : '') + '</div>' +
         '<div class="prac-detalle">' + esc(p.destino) + (p.destino && p.detalle ? ' — ' : '') + esc(p.detalle) + '</div></div>' +
         '<div class="prac-badge">' + esc(p.tipo || '—') + '</div></div>';
     }).join('') || '<div class="empty">Sin prácticos en turno cargados</div>';
@@ -85,9 +85,11 @@
 
     // stats
     var stats = document.querySelectorAll('.stats-row .stat-num');
-    if (stats.length >= 2) {
+    if (stats.length >= 4) {
       stats[0].textContent = t.practicos.length;
       stats[1].textContent = t.francos.length;
+      stats[2].textContent = t.enfermos.length + t.observaciones.length;
+      stats[3].textContent = t.practicos.filter(function (p) { return p.cambio; }).length;
     }
     var cntTurno = document.getElementById('cntTurno');
     var cntFrancos = document.getElementById('cntFrancos');
@@ -104,12 +106,19 @@
       var estado = 'sin';
       if (/AUTORIZADO/i.test(obs) && !/NO AUT/i.test(obs)) estado = 'autorizado';
       else if (/NO AUT/i.test(obs)) estado = 'posible';
-      else if (b.fechaConfirmado) estado = 'autorizado';
+      // Antes había un tercer criterio (si tenía fechaConfirmado -> autorizado) que
+      // generaba falsos positivos: tener una fecha de Z.C./confirmación cargada no
+      // significa que la agencia haya autorizado el despacho. Solo el texto explícito
+      // ("AUTORIZADO" / "NO AUT") define el estado; si no dice nada, queda "sin confirmar".
       var tipoFiltro = b.tipo === 'campana' ? 'movimiento' : b.tipo;
       var dataHora = soloDigitos(b.fechaRecalada) + soloDigitos(b.horaRecalada);
       var icon = b.tipo === 'subida' ? '⬆️' : (b.tipo === 'bajada' ? '⬇️' : '🔄');
+      var marcaBadge = '';
+      if (b.marca === 'X') marcaBadge = '<span class="badge b-verde">✔ Despachado</span>';
+      else if (b.marca === '*') marcaBadge = '<span class="badge b-naranja">🔔 Novedad agencia</span>';
       return '<div class="buque-row ' + estado + '" data-tipo="' + tipoFiltro + '" data-nombre="' + esc(b.buque) + '" data-agencia="' + esc(b.agencia) + '" data-hora="' + esc(dataHora) + '" data-estado="' + estado + '">' +
         '<div class="buque-top"><div class="buque-nombre">' + icon + ' ' + esc(b.buque) + '</div><div class="buque-cf">CF ' + esc(b.coef) + '</div></div>' +
+        (marcaBadge ? '<div style="padding:0 12px 6px">' + marcaBadge + '</div>' : '') +
         '<div class="buque-bottom">' +
         '<div class="buque-dato"><span>Agencia</span><strong>' + esc(b.agencia) + '</strong></div>' +
         '<div class="buque-dato"><span>Recalada</span><strong>' + esc(b.fechaRecalada) + ' ' + esc(b.horaRecalada) + '</strong></div>' +
