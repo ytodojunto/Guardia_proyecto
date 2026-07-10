@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>MULTIPAR S.A. — Guardia 24/06/2026</title>
+<title>MULTIPAR S.A. — Guardia</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
@@ -43,6 +43,8 @@ body{font-family:system-ui,-apple-system,sans-serif;font-size:13px;background:#e
 .hdr-meta{display:flex;align-items:center;justify-content:space-between}
 .hdr-fecha{color:rgba(255,255,255,0.7);font-size:10px}
 .hdr-despachos{background:rgba(255,255,255,0.12);border-radius:6px;padding:2px 8px;color:#fff;font-size:10px}
+.theme-toggle{background:rgba(255,255,255,0.12);border-radius:6px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;flex-shrink:0}
+.theme-toggle:active{background:rgba(255,255,255,0.25)}
 .hdr-despachos strong{font-size:12px}
 
 /* SEARCH BAR GLOBAL */
@@ -213,19 +215,56 @@ body{font-family:system-ui,-apple-system,sans-serif;font-size:13px;background:#e
 /* EMPTY */
 .empty{padding:14px 12px;text-align:center;font-size:11.5px;color:var(--gris3);font-style:italic}
 
+/* LOADING STATE */
+.loading-skel{padding:26px 12px;text-align:center;color:var(--gris3);font-size:12px}
+.loading-skel .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--azul3);margin:0 3px;animation:loadPulse 1.4s ease-in-out infinite}
+.loading-skel .dot:nth-child(2){animation-delay:.2s}
+.loading-skel .dot:nth-child(3){animation-delay:.4s}
+.loading-skel .txt{display:block;margin-top:8px}
+@keyframes loadPulse{0%,80%,100%{opacity:.25;transform:scale(.75)}40%{opacity:1;transform:scale(1)}}
+.loading-banner{background:#fff3cd;color:#7a5c00;font-size:11.5px;text-align:center;padding:6px 10px;font-weight:500}
+.loading-banner.oculto{display:none}
+.loading-banner.error{background:var(--rojo2);color:var(--rojo)}
+
 /* LEYENDA */
 .leyenda{display:flex;gap:10px;flex-wrap:wrap;padding:8px 12px;font-size:10px;background:#fafbfc;border-bottom:0.5px solid var(--borde)}
 .ley-item{display:flex;align-items:center;gap:4px;color:var(--gris3)}
 
 /* HIGHLIGHT */
 mark{background:#fff3cd;border-radius:2px;padding:0 1px}
+
+/* MODO NOCTURNO */
+html[data-theme="dark"]{
+  --gris:#161a22;--gris2:#232936;--gris3:#8b96a8;
+  --borde:rgba(255,255,255,0.09);
+  --verde2:#123322;--rojo2:#3a1a1a;--naranja2:#3a2e10;
+}
+html[data-theme="dark"] body{background:#0e1117;color:#e7eaf0}
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .desp-body,
+html[data-theme="dark"] .login-box{background:#1a1f2a;color:#e7eaf0}
+html[data-theme="dark"] .login-title{color:#dfe6f5}
+html[data-theme="dark"] .login-sub,
+html[data-theme="dark"] .franco-fechas,
+html[data-theme="dark"] .obs-texto,
+html[data-theme="dark"] .det-label{color:#9aa4b5}
+html[data-theme="dark"] .login-field input{background:#232936;border-color:#333c4d;color:#e7eaf0}
+html[data-theme="dark"] .buque-dato strong{color:#e7eaf0}
+html[data-theme="dark"] .leyenda{background:#161a22;border-color:rgba(255,255,255,0.09)}
+html[data-theme="dark"] .empty{color:#7c8698}
+html[data-theme="dark"] .filter-bar,
+html[data-theme="dark"] .sort-bar{background:#1a1f2a}
+html[data-theme="dark"] .nav-tabs{background:#0e1117}
+html[data-theme="dark"] .loading-banner{background:#3a2e10;color:#f2d27a}
+html[data-theme="dark"] .loading-banner.error{background:#3a1a1a;color:#f5a3a3}
+html[data-theme="dark"] mark{background:#5a4a10;color:#fff}
 </style>
 </head>
 <body>
 
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
-    <div class="login-logo"><img src="http://www.multipar.com.ar/img/Logo-Multipar-Top.svg" alt="Multipar S.A." style="height:48px"></div>
+    <div class="login-logo"><img src="assets/img/logo-multipar.png" alt="Multipar S.A." style="height:64px" onerror="this.style.display='none'"></div>
     <div class="login-title">MULTIPAR S.A.</div>
     <div class="login-sub">Guardia — Acceso restringido</div>
     <form id="loginForm" autocomplete="off">
@@ -246,14 +285,15 @@ mark{background:#fff3cd;border-radius:2px;padding:0 1px}
 <div class="app-header">
   <div class="hdr-top">
     <div class="logo-box">
-      <img src="http://www.multipar.com.ar/img/Logo-Multipar-Top.svg" alt="Multipar S.A." style="height:22px">
+      <img src="assets/img/logo-multipar.png" alt="Multipar S.A." style="height:30px" onerror="this.style.display='none'">
       <div><div class="logo-text">MULTIPAR S.A.</div><div class="logo-sub">RÍO PARANÁ</div></div>
     </div>
     <div class="hdr-info">
-      <div class="hdr-coord">👤 Coord: SLUTZKY, Sergio</div>
-      <div class="hdr-op">Operador: Ezequiel → Leonel</div>
+      <div class="hdr-coord">👤 Coord: —</div>
+      <div class="hdr-op">Operador: —</div>
     </div>
-    <div class="hdr-despachos">Mes: <strong>47</strong></div>
+    <div class="hdr-despachos">Mes: <strong style="font-size:10px">En proceso</strong></div>
+    <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Cambiar tema">🌙</div>
   </div>
   <div class="search-global">
     <span>🔍</span>
@@ -261,9 +301,10 @@ mark{background:#fff3cd;border-radius:2px;padding:0 1px}
     <span class="search-clear" id="searchClear" onclick="clearSearch()">✕</span>
   </div>
   <div class="hdr-meta">
-    <div class="hdr-fecha">📅 24/06/2026 — 19:38 hs</div>
+    <div class="hdr-fecha">📅 Cargando…</div>
   </div>
 </div>
+<div class="loading-banner" id="loadingBanner">⏳ Cargando datos de guardia en vivo…</div>
 
 <div class="nav-tabs">
   <div class="nav-tab active" onclick="showTab('turno')">👥 Turno</div>
@@ -278,10 +319,10 @@ mark{background:#fff3cd;border-radius:2px;padding:0 1px}
 <div class="section active" id="sec-turno">
 
   <div class="stats-row" style="margin-top:10px">
-    <div class="stat-box"><div class="stat-num verde">8</div><div class="stat-label">En turno</div></div>
-    <div class="stat-box"><div class="stat-num naranja">11</div><div class="stat-label">Francos</div></div>
-    <div class="stat-box"><div class="stat-num rojo">5</div><div class="stat-label">Varios</div></div>
-    <div class="stat-box"><div class="stat-num azul">2</div><div class="stat-label">Contactados</div></div>
+    <div class="stat-box"><div class="stat-num verde">—</div><div class="stat-label">En turno</div></div>
+    <div class="stat-box"><div class="stat-num naranja">—</div><div class="stat-label">Francos</div></div>
+    <div class="stat-box"><div class="stat-num rojo">—</div><div class="stat-label">Varios</div></div>
+    <div class="stat-box"><div class="stat-num azul">—</div><div class="stat-label">Contactados</div></div>
   </div>
 
   <!-- Filtros turno -->
@@ -311,54 +352,8 @@ mark{background:#fff3cd;border-radius:2px;padding:0 1px}
       <span>🟢</span><span class="card-head-title">En turno</span><span class="card-head-count" id="cntTurno">8</span>
     </div>
     <div id="listaTurno">
-      <div class="prac-row" data-tipo="turno" data-nombre="Vaccaro Matías" data-pos="1" data-hora="06:00">
-        <div class="prac-num">1</div>
-        <div class="prac-info"><div class="prac-nombre">Vaccaro, Matías</div><div class="prac-detalle">Ingreso: 24/06 – 06:00</div></div>
-        <div class="prac-badge">E/T</div>
-      </div>
-      <div class="prac-row" data-tipo="turno" data-nombre="De Biase Leonardo" data-pos="2" data-hora="06:00">
-        <div class="prac-num">2</div>
-        <div class="prac-info"><div class="prac-nombre">De Biase, Leonardo</div><div class="prac-detalle">Ingreso: 24/06 – 06:00</div></div>
-        <div class="prac-badge">E/T</div>
-      </div>
-      <div class="prac-row" data-tipo="turno cambio" data-nombre="Mochi Horacio" data-pos="3" data-hora="06:00">
-        <div class="prac-num cambio">3</div>
-        <div class="prac-info">
-          <div class="prac-nombre cambio">Mochi, Horacio</div>
-          <div class="prac-detalle">Ingreso: 24/06 – 06:00</div>
-          <div class="prac-obs">⇄ Cubre a Canonico (pos. 2 – franco)</div>
-        </div>
-        <div class="prac-badge">E/T</div>
-      </div>
-      <div class="prac-row" data-tipo="turno" data-nombre="Rotela Fiore Carlos" data-pos="4" data-hora="01:45">
-        <div class="prac-num">4</div>
-        <div class="prac-info"><div class="prac-nombre">Rotela Fiore, Carlos</div><div class="prac-detalle">Ingreso: 24/06 – 01:45</div></div>
-        <div class="prac-badge">E/T</div>
-      </div>
-      <div class="prac-row" data-tipo="turno cambio" data-nombre="Torres Javier" data-pos="5" data-hora="06:00">
-        <div class="prac-num cambio">5</div>
-        <div class="prac-info">
-          <div class="prac-nombre cambio">Torres, Javier</div>
-          <div class="prac-detalle">Ingreso: 24/06 – 06:00</div>
-          <div class="prac-obs">⇄ Cubre a Romano (pos. 5 – franco)</div>
-        </div>
-        <div class="prac-badge">E/T</div>
-      </div>
-      <div class="prac-row" data-tipo="turno" data-nombre="Slutzky Sergio" data-pos="6" data-hora="22:46">
-        <div class="prac-num">6</div>
-        <div class="prac-info"><div class="prac-nombre">Slutzky, Sergio</div><div class="prac-detalle">Ingreso: 13/06 – 22:46</div></div>
-        <div class="prac-badge">E/T</div>
-      </div>
-      <div class="prac-row" data-tipo="turno" data-nombre="Ferrari Germán" data-pos="7" data-hora="00:15">
-        <div class="prac-num">7</div>
-        <div class="prac-info"><div class="prac-nombre">Ferrari, Germán</div><div class="prac-detalle">Ingreso: 25/06 – 00:15</div></div>
-        <div class="prac-badge">E/T</div>
-      </div>
-      <div class="prac-row" data-tipo="turno" data-nombre="Sanguinetti Lisandro" data-pos="8" data-hora="00:16">
-        <div class="prac-num">8</div>
-        <div class="prac-info"><div class="prac-nombre">Sanguinetti, Lisandro</div><div class="prac-detalle">Ingreso: 25/06 – 00:16</div></div>
-        <div class="prac-badge">E/T</div>
-      </div>
+      <div class="loading-skel"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="txt">Cargando datos en vivo…</span></div>
+    
     </div>
   </div>
 
@@ -366,68 +361,15 @@ mark{background:#fff3cd;border-radius:2px;padding:0 1px}
   <div class="card" id="cardFrancos">
     <div class="card-head"><span>🟡</span><span class="card-head-title">Francos</span><span class="card-head-count" id="cntFrancos">11</span></div>
     <div id="listaFrancos">
-      <div class="franco-row" data-tipo="franco" data-nombre="Torres Gabriel">
-        <div class="franco-top"><div class="franco-num">1</div><div class="franco-nombre">Torres, Gabriel</div><span class="badge b-naranja">FRANCO</span></div>
-        <div class="franco-fechas"><span>Salida: 24/06 – 06:00</span><span>Regresa: 08/07 – 06:00</span></div>
-      </div>
-      <div class="franco-row" data-tipo="franco cambio" data-nombre="Canonico Roberto">
-        <div class="franco-top"><div class="franco-num">2</div><div class="franco-nombre">Canonico, Roberto</div><span class="badge b-naranja">FRANCO</span></div>
-        <div class="franco-fechas"><span>Salida: 24/06 – 06:00</span><span>Regresa: 08/07 – 06:00</span></div>
-        <div class="franco-obs">⇄ Cubierto por Mochi (pos. 3 en turno)</div>
-      </div>
-      <div class="franco-row" data-tipo="franco" data-nombre="Bretschneider Rodolfo">
-        <div class="franco-top"><div class="franco-num">3</div><div class="franco-nombre">Bretschneider, Rodolfo</div><span class="badge b-naranja">FRANCO</span></div>
-        <div class="franco-fechas"><span>Salida: 24/06 – 06:00</span><span>Regresa: 08/07 – 06:00</span></div>
-      </div>
-      <div class="franco-row" data-tipo="franco" data-nombre="Bayones Fernando">
-        <div class="franco-top"><div class="franco-num">4</div><div class="franco-nombre">Bayones, Fernando</div><span class="badge b-naranja">FRANCO</span></div>
-        <div class="franco-fechas"><span>Salida: 24/06 – 07:15</span><span>Regresa: 08/07 – 07:15</span></div>
-      </div>
-      <div class="franco-row" data-tipo="franco cambio" data-nombre="Romano Marcelo">
-        <div class="franco-top"><div class="franco-num">5</div><div class="franco-nombre">Romano, Marcelo</div><span class="badge b-naranja">FRANCO</span></div>
-        <div class="franco-fechas"><span>Salida: 24/06 – 10:10</span><span>Regresa: 08/07 – 10:10</span></div>
-        <div class="franco-obs">⇄ Cubierto por Torres J. (pos. 5 en turno)</div>
-      </div>
-      <div class="franco-row" data-tipo="franco" data-nombre="Flores Luis">
-        <div class="franco-top"><div class="franco-num">6</div><div class="franco-nombre">Flores, Luis</div><span class="badge b-naranja">FRANCO</span></div>
-        <div class="franco-fechas"><span>Salida: 24/06 – 06:00</span><span>Regresa: 08/07 – 06:00</span></div>
-      </div>
-      <div class="franco-row" data-tipo="franco" data-nombre="Falcon Jorge">
-        <div class="franco-top"><div class="franco-num">7</div><div class="franco-nombre">Falcon, Jorge</div><span class="badge b-naranja">FRANCO</span></div>
-        <div class="franco-fechas"><span>Salida: 23/06 – 06:00</span><span>Regresa: 28/06 – 06:00</span></div>
-      </div>
-      <div class="franco-row" data-tipo="franco cambio" data-nombre="Slutzky Sergio">
-        <div class="franco-top"><div class="franco-num">8</div><div class="franco-nombre">Slutzky, Sergio</div><span class="badge b-naranja">FRANCO</span></div>
-        <div class="franco-fechas"><span>Sale: 08/07 – 06:00</span></div>
-        <div class="franco-obs">⇄ Cambia con Sanguinetti el 01/07/2026</div>
-      </div>
-      <div class="franco-row" data-tipo="franco" data-nombre="Ojeda Sergio">
-        <div class="franco-top"><div class="franco-num">8</div><div class="franco-nombre">Ojeda, Sergio</div><span class="badge b-naranja">FRANCO</span></div>
-        <div class="franco-fechas"><span>Salida: 10/06 – 19:55</span><span>Regresa: 24/06 – 19:55</span></div>
-      </div>
-      <div class="franco-row" data-tipo="franco" data-nombre="Cuba Emmanuel">
-        <div class="franco-top"><div class="franco-num">8</div><div class="franco-nombre">Cuba, Emmanuel</div><span class="badge b-naranja">FRANCO</span></div>
-        <div class="franco-fechas"><span>Salida: 23/06 – 06:00</span><span>Regresa: 10/07 – 06:00</span></div>
-      </div>
-      <div class="franco-row" data-tipo="franco" data-nombre="Martínez Cristian">
-        <div class="franco-top"><div class="franco-num">8</div><div class="franco-nombre">Martínez, Cristian</div><span class="badge b-naranja">FRANCO</span></div>
-        <div class="franco-fechas"><span>Salida: 24/06 – 06:00</span><span>Regresa: 08/07 – 06:00</span></div>
-      </div>
+      <div class="loading-skel"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="txt">Cargando datos en vivo…</span></div>
+    
     </div>
   </div>
 
   <!-- VARIOS -->
   <div class="card" id="cardVarios">
-    <div class="card-head"><span>🔵</span><span class="card-head-title">Varios</span><span class="card-head-count">5</span></div>
-    <div class="sec-label">Enfermos</div>
-    <div class="varios-row" data-tipo="varios" data-nombre="Nirschl Héctor"><div class="varios-icon">🏥</div><div><div class="varios-nombre">Nirschl, Héctor</div><div class="varios-detalle">Licencia médica — hasta 08/07 – 06:00</div></div></div>
-    <div class="varios-row" data-tipo="varios" data-nombre="Pascual Germán"><div class="varios-icon">🏥</div><div><div class="varios-nombre">Pascual, Germán</div><div class="varios-detalle">Licencia médica — hasta 25/06 – 07:45</div></div></div>
-    <div class="sec-label">Fallecimiento de familiar</div>
-    <div class="varios-row" data-tipo="varios" data-nombre="Val Gabriel"><div class="varios-icon">🕊️</div><div><div class="varios-nombre">Val, Gabriel</div><div class="varios-detalle">Fallecimiento de su madre — hasta 24/06 – 22:25</div></div></div>
-    <div class="sec-label">Jubilado</div>
-    <div class="varios-row" data-tipo="varios" data-nombre="Farías Marcelo"><div class="varios-icon">🎖️</div><div><div class="varios-nombre">Farías, Marcelo</div><div class="varios-detalle">Jubilado desde 01/02/2026</div></div></div>
-    <div class="sec-label">Licencia extendida</div>
-    <div class="varios-row" data-tipo="varios" data-nombre="Cuba Sebastián"><div class="varios-icon">📋</div><div><div class="varios-nombre">Cuba, Sebastián</div><div class="varios-detalle">Licencia — hasta 08/07 – 06:00</div></div></div>
+    <div class="card-head"><span>🔵</span><span class="card-head-title">Varios</span><span class="card-head-count">—</span></div>
+    <div class="loading-skel"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="txt">Cargando datos en vivo…</span></div>
   </div>
 </div>
 
@@ -456,42 +398,7 @@ mark{background:#fff3cd;border-radius:2px;padding:0 1px}
   </div>
 
   <div id="listaBuquesDesp">
-    <div class="desp-card" data-tipo="bajada" data-hora="1400" data-nombre="PHILLIP BAY">
-      <div class="desp-head bajada">
-        <div><div class="desp-buque">PHILLIP BAY</div><div class="desp-meta">ISA · Islas Marshall · 24/06 – 14:00</div></div>
-        <span class="badge b-azul">🌊 TRA</span>
-      </div>
-      <div class="desp-body">
-        <div class="desp-practicos">
-          <div class="prac-chip"><div class="chip-pos">1</div><div class="chip-nombre">Correa Daniel</div><div class="chip-empresa">otra empresa</div><div class="chip-icon">🤝</div></div>
-          <div class="prac-chip"><div class="chip-pos">2</div><div class="chip-nombre">Sosa, Cristian</div><div class="chip-empresa">otra empresa</div><div class="chip-icon">🤝</div></div>
-        </div>
-        <div class="desp-datos">
-          <div class="dato-row"><span class="dato-label">Calado:</span><span class="dato-val">8,40 m</span></div>
-          <div class="dato-row"><span class="dato-label">Inicio:</span><span class="dato-val">24/06 – 14:00 (Rada S.L. vía EM)</span></div>
-          <div class="dato-row"><span class="dato-label">Baja Pco 1:</span><span class="dato-val">25/06 – 08:00 en Escobar</span></div>
-          <div class="dato-row"><span class="dato-label">Arribo Pco 2:</span><span class="dato-val">25/06 – 13:30 en ZC</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="desp-card" data-tipo="bajada" data-hora="2030" data-nombre="KISO">
-      <div class="desp-head bajada">
-        <div><div class="desp-buque">KISO</div><div class="desp-meta">ISA · Panamá · 24/06 – 20:30</div></div>
-        <span class="badge b-azul">🌊 TRA</span>
-      </div>
-      <div class="desp-body">
-        <div class="desp-practicos">
-          <div class="prac-chip"><div class="chip-pos">1</div><div class="chip-nombre">Llambias, Javier</div><div class="chip-empresa">MULTIPAR</div><div class="chip-icon">👤</div></div>
-          <div class="prac-chip"><div class="chip-pos">2</div><div class="chip-nombre">Casanova, Diego</div><div class="chip-empresa">MULTIPAR</div><div class="chip-icon">👤</div></div>
-        </div>
-        <div class="desp-datos">
-          <div class="dato-row"><span class="dato-label">Calado:</span><span class="dato-val">9,20 m</span></div>
-          <div class="dato-row"><span class="dato-label">Inicio:</span><span class="dato-val">24/06 – 20:30 (Rada S.L. vía EM)</span></div>
-          <div class="dato-row"><span class="dato-label">Baja Pco 1:</span><span class="dato-val">San Nicolás (estimado)</span></div>
-          <div class="dato-row"><span class="dato-label">Arribo Pco 2:</span><span class="dato-val">ZEYA</span></div>
-        </div>
-      </div>
-    </div>
+    <div class="loading-skel"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="txt">Cargando datos en vivo…</span></div>
     <div class="empty" id="emptyBuques" style="display:none">Sin resultados</div>
   </div>
 </div>
@@ -530,100 +437,7 @@ mark{background:#fff3cd;border-radius:2px;padding:0 1px}
   </div>
 
   <div id="listaPrevistos">
-    <div class="buque-row posible" data-tipo="subida" data-nombre="ULTRA ESTERHAZY" data-agencia="ISA" data-hora="220600" data-estado="posible">
-      <div class="buque-top"><div class="buque-nombre">ULTRA ESTERHAZY</div><div class="buque-cf">CF 95</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-      <div class="buque-bottom">
-        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-        <div class="buque-dato"><span>Calado</span><strong>7,20 m</strong></div>
-        <div class="buque-dato"><span>Pedido</span><strong>22/06 – AM</strong></div>
-        <div class="buque-dato"><span>Destino</span><strong>Rada Pta. Alvear</strong></div>
-      </div>
-      <div class="buque-obs">⚠️ Pos. AUT — 2 prácticos vía Martín García.</div>
-    </div>
-    <div class="buque-row posible" data-tipo="subida" data-nombre="MAJESTIC VERA" data-agencia="ISA" data-hora="221400" data-estado="posible">
-      <div class="buque-top"><div class="buque-nombre">MAJESTIC VERA</div><div class="buque-cf">CF 100</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-      <div class="buque-bottom">
-        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-        <div class="buque-dato"><span>Calado</span><strong>6,50 m</strong></div>
-        <div class="buque-dato"><span>Pedido</span><strong>22/06 – 14:00</strong></div>
-        <div class="buque-dato"><span>Destino</span><strong>San Lorenzo</strong></div>
-      </div>
-      <div class="buque-obs">⚠️ Pos. AUT — aguarda determinante.</div>
-    </div>
-    <div class="buque-row autorizado" data-tipo="subida" data-nombre="LOLITA" data-agencia="ISA" data-hora="252358" data-estado="autorizado">
-      <div class="buque-top"><div class="buque-nombre">LOLITA</div><div class="buque-cf">CF 107</div><div class="buque-tilde ok">✓</div></div>
-      <div class="buque-bottom">
-        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-        <div class="buque-dato"><span>Calado</span><strong>6,30 m</strong></div>
-        <div class="buque-dato"><span>Pedido</span><strong>25/06 – PM</strong></div>
-        <div class="buque-dato"><span>Destino</span><strong>Rada S.L. "Centro"</strong></div>
-      </div>
-      <div class="buque-obs">✅ Autorizado — agencia contactada.</div>
-    </div>
-    <div class="buque-row" data-tipo="subida" data-nombre="SOLAR RUO YUN" data-agencia="ISA" data-hora="251000" data-estado="sin">
-      <div class="buque-top"><div class="buque-nombre">SOLAR RUO YUN</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-      <div class="buque-bottom">
-        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-        <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
-        <div class="buque-dato"><span>Pedido</span><strong>25/06 – 10:00</strong></div>
-        <div class="buque-dato"><span>Destino</span><strong>San Lorenzo</strong></div>
-      </div>
-    </div>
-    <div class="buque-row" data-tipo="subida" data-nombre="GREAT MIND" data-agencia="ISA" data-hora="302000" data-estado="sin">
-      <div class="buque-top"><div class="buque-nombre">GREAT MIND</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-      <div class="buque-bottom">
-        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-        <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
-        <div class="buque-dato"><span>Pedido</span><strong>30/06 – 20:00</strong></div>
-        <div class="buque-dato"><span>Destino</span><strong>San Lorenzo</strong></div>
-      </div>
-    </div>
-    <div class="buque-row" data-tipo="bajada" data-nombre="HYDE PARK" data-agencia="ISA" data-hora="231800" data-estado="sin">
-      <div class="buque-top"><div class="buque-nombre">HYDE PARK</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-      <div class="buque-bottom">
-        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-        <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
-        <div class="buque-dato"><span>Pedido</span><strong>23/06 – 18:00</strong></div>
-        <div class="buque-dato"><span>Ruta</span><strong>Rada S.L. → ZEYA vía EM</strong></div>
-      </div>
-    </div>
-    <div class="buque-row posible" data-tipo="bajada" data-nombre="SC DALLAS" data-agencia="ISA" data-hora="241400" data-estado="posible">
-      <div class="buque-top"><div class="buque-nombre">SC DALLAS</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-      <div class="buque-bottom">
-        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-        <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
-        <div class="buque-dato"><span>Pedido</span><strong>24/06 – 14:00</strong></div>
-        <div class="buque-dato"><span>Ruta</span><strong>Rada Rosario → ZEYA</strong></div>
-      </div>
-      <div class="buque-obs">⚠️ Pos. AUT — aguarda GFH.</div>
-    </div>
-    <div class="buque-row" data-tipo="bajada" data-nombre="CHEMROAD HOPE" data-agencia="ISA" data-hora="251400" data-estado="sin">
-      <div class="buque-top"><div class="buque-nombre">CHEMROAD HOPE</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-      <div class="buque-bottom">
-        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-        <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
-        <div class="buque-dato"><span>Pedido</span><strong>25/06 – 14:00</strong></div>
-        <div class="buque-dato"><span>Ruta</span><strong>Rada S.L. → ZEYA vía EM</strong></div>
-      </div>
-    </div>
-    <div class="buque-row movimiento" data-tipo="movimiento" data-nombre="PAX MUNDI" data-agencia="ISA" data-hora="251000" data-estado="sin">
-      <div class="buque-top"><div class="buque-nombre">PAX MUNDI</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-      <div class="buque-bottom">
-        <div class="buque-dato"><span>Agencia</span><strong>ISA</strong></div>
-        <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
-        <div class="buque-dato"><span>Pedido</span><strong>25/06 – 10:00</strong></div>
-        <div class="buque-dato"><span>Ruta</span><strong>Rada Sn. Nicolás → ZEYA</strong></div>
-      </div>
-    </div>
-    <div class="buque-row movimiento" data-tipo="movimiento" data-nombre="FABIA SCHULTE" data-agencia="SINGAPUR" data-hora="281000" data-estado="sin">
-      <div class="buque-top"><div class="buque-nombre">FABIA SCHULTE</div><div class="buque-cf">CF —</div><div class="buque-tilde" onclick="toggle(this)">○</div></div>
-      <div class="buque-bottom">
-        <div class="buque-dato"><span>Agencia</span><strong>Singapur</strong></div>
-        <div class="buque-dato"><span>Calado</span><strong>—</strong></div>
-        <div class="buque-dato"><span>Pedido</span><strong>28/06 – 10:00</strong></div>
-        <div class="buque-dato"><span>Ruta</span><strong>Rada Sn. Nicolás → Rada S.L. Norte</strong></div>
-      </div>
-    </div>
+    <div class="loading-skel"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="txt">Cargando datos en vivo…</span></div>
     <div class="empty" id="emptyPrev" style="display:none">Sin resultados para este filtro</div>
   </div>
 </div>
@@ -662,67 +476,15 @@ mark{background:#fff3cd;border-radius:2px;padding:0 1px}
   </div>
 
   <div class="card" id="listaNov">
-    <div class="obs-item" data-tipo="trafico" data-orden="1">
-      <span class="obs-tag tag-rojo">🚦 Reserva de canal</span>
-      <div class="obs-texto">Entrada metanero KOOL GLACIER — 25/1800 del Par 30 al Km 239.</div>
-      <div class="obs-fecha">24/06 – 13:14</div>
-    </div>
-    <div class="obs-item" data-tipo="trafico" data-orden="2">
-      <span class="obs-tag tag-naranja">🚦 Regulación</span>
-      <div class="obs-texto">Salida metanero AL SAKHAMAH — ETD Escobar 24/2345 (a confirmar).</div>
-      <div class="obs-fecha">24/06 – 13:57</div>
-    </div>
-    <div class="obs-item" data-tipo="turno" data-orden="3">
-      <span class="obs-tag tag-azul">📋 Cambio de turno</span>
-      <div class="obs-texto">Slutzky cambia con Sanguinetti el 01/07/2026.</div>
-      <div class="obs-fecha">24/06 – 07:12</div>
-    </div>
-    <div class="obs-item" data-tipo="turno" data-orden="4">
-      <span class="obs-tag tag-naranja">📋 Logística</span>
-      <div class="obs-texto">ULTRA ESTERHAZY — dejan sobre en Lanchas del Este para que embarquen los prácticos.</div>
-      <div class="obs-fecha">24/06 – 08:30</div>
-    </div>
-    <div class="obs-item" data-tipo="turno" data-orden="5">
-      <span class="obs-tag tag-rojo">📋 Voucher a bordo</span>
-      <div class="obs-texto">Leguizamón olvidó voucher en el KISO. Recordar a los prácticos de bajada que lo retiren.</div>
-      <div class="obs-fecha">24/06 – 09:15</div>
-    </div>
-    <div class="obs-item" data-tipo="turno" data-orden="6">
-      <span class="obs-tag tag-verde">📋 Lancha Campana</span>
-      <div class="obs-texto">Solicitar servicio con mínimo 4 horas de anticipación.</div>
-      <div class="obs-fecha">24/06 – 06:00</div>
-    </div>
-    <div class="obs-item" data-tipo="permanente" data-orden="10">
-      <span class="obs-tag tag-rojo">📌 PAE Campana</span>
-      <div class="obs-texto">Autos no ingresan al predio. Traslado desde la barrera al buque.</div>
-      <div class="obs-fecha">Vigente desde 15/10</div>
-    </div>
-    <div class="obs-item" data-tipo="permanente" data-orden="11">
-      <span class="obs-tag tag-azul">📌 SIDERCA (CPNA)</span>
-      <div class="obs-texto">Embarco exclusivamente por lancha. No se puede embarcar por tierra.</div>
-      <div class="obs-fecha">Vigente desde 23/09</div>
-    </div>
-    <div class="obs-item" data-tipo="permanente" data-orden="12">
-      <span class="obs-tag tag-naranja">📌 Salida de turno</span>
-      <div class="obs-texto">Salidas sin fecha de reingreso deben avisarse 12 hs antes del turno.</div>
-      <div class="obs-fecha">Disposición vigente</div>
-    </div>
-    <div class="obs-item" data-tipo="permanente" data-orden="13">
-      <span class="obs-tag tag-verde">📌 Subidas vía Martín García</span>
-      <div class="obs-texto">Destino T. del Guazú / Km. 171 RPG se despacha con 2 prácticos.</div>
-      <div class="obs-fecha">Vigente desde 01/04</div>
-    </div>
-    <div class="obs-item" data-tipo="permanente" data-orden="14">
-      <span class="obs-tag tag-azul">📌 Lancha Escobar</span>
-      <div class="obs-texto">Nuevo celular: 3489-511953</div>
-      <div class="obs-fecha">Actualizado</div>
-    </div>
+    <div class="loading-skel"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="txt">Cargando datos en vivo…</span></div>
   </div>
 </div>
 
 <!-- ══ REMISES ══ -->
 <div class="section" id="sec-remises">
-  <div id="listaRemises" style="margin-top:10px"></div>
+  <div id="listaRemises" style="margin-top:10px">
+    <div class="loading-skel"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="txt">Cargando datos en vivo…</span></div>
+  </div>
 </div>
 
 <!-- ══ INFO ══ -->
@@ -756,6 +518,26 @@ mark{background:#fff3cd;border-radius:2px;padding:0 1px}
 </div>
 
 <script>
+// ── MODO NOCTURNO ──────────────────────────────────────────────────
+(function () {
+  var KEY = 'mp_theme';
+  var guardado = localStorage.getItem(KEY);
+  var inicial = guardado || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  aplicarTema(inicial);
+
+  function aplicarTema(tema) {
+    document.documentElement.setAttribute('data-theme', tema);
+    var btn = document.getElementById('themeToggle');
+    if (btn) btn.textContent = tema === 'dark' ? '☀️' : '🌙';
+  }
+  window.toggleTheme = function () {
+    var actual = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    localStorage.setItem(KEY, actual);
+    aplicarTema(actual);
+  };
+  document.addEventListener('DOMContentLoaded', function () { aplicarTema(document.documentElement.getAttribute('data-theme') || inicial); });
+})();
+
 // ── TAB NAV ──────────────────────────────────────────────────────
 function showTab(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
