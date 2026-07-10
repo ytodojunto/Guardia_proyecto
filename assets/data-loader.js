@@ -120,11 +120,12 @@
       stats[3].textContent = t.practicos.filter(function (p) { return p.cambio; }).length;
     }
 
-    // coordinador / presidente en el header
+    // coordinador en el header (se quitó Presidente por pedido)
     var hdrCoord = document.querySelector('.hdr-coord');
     if (hdrCoord && t.coordinador) hdrCoord.textContent = '👤 Coord: ' + t.coordinador;
-    var hdrOp = document.querySelector('.hdr-op');
-    if (hdrOp && t.presidente) hdrOp.textContent = 'Presidente: ' + t.presidente;
+
+    // determinantes reales (hoja GUARDIA, celda B71 en adelante)
+    renderDeterminantes(t.determinantes);
 
     // teléfonos reales en la pestaña Info (reemplaza los de ejemplo)
     if (t.telefonos && t.telefonos.length) {
@@ -141,6 +142,15 @@
     var cntFrancos = document.getElementById('cntFrancos');
     if (cntTurno) cntTurno.textContent = t.practicos.length;
     if (cntFrancos) cntFrancos.textContent = t.francos.length;
+  }
+
+  // ── DETERMINANTES (canal/km/calado reales, hoja GUARDIA B71+) ────
+  function renderDeterminantes(lista) {
+    var cont = document.getElementById('listaDeterminantes');
+    if (!cont) return;
+    cont.innerHTML = (lista || []).map(function (linea) {
+      return '<div class="det-row"><span class="det-label">' + esc(linea) + '</span></div>';
+    }).join('') || '<div class="empty">Sin determinantes cargadas</div>';
   }
 
   // ── PREVISTOS (subidas / bajadas / campana) ──────────────────
@@ -167,8 +177,8 @@
         (marcaBadge ? '<div style="padding:0 12px 6px">' + marcaBadge + '</div>' : '') +
         '<div class="buque-bottom">' +
         '<div class="buque-dato"><span>Agencia</span><strong>' + esc(b.agencia) + '</strong></div>' +
-        '<div class="buque-dato"><span>Recalada</span><strong>' + esc(b.fechaRecalada) + ' ' + esc(b.horaRecalada) + '</strong></div>' +
-        (b.fechaConfirmado ? '<div class="buque-dato"><span>Confirmado</span><strong>' + esc(b.fechaConfirmado) + ' ' + esc(b.horaConfirmado) + '</strong></div>' : '') +
+        '<div class="buque-dato"><span>' + esc(b.labelFecha1 || 'Recalada') + '</span><strong>' + esc(b.fechaRecalada) + ' ' + esc(b.horaRecalada) + '</strong></div>' +
+        (b.fechaConfirmado ? '<div class="buque-dato"><span>' + esc(b.labelFecha2 || 'Confirmado') + '</span><strong>' + esc(b.fechaConfirmado) + ' ' + esc(b.horaConfirmado) + '</strong></div>' : '') +
         '<div class="buque-dato"><span>Ruta</span><strong>' + esc(b.desde) + ' → ' + esc(b.hasta) + '</strong></div>' +
         '</div>' +
         (obs ? '<div class="buque-obs">' + esc(obs) + '</div>' : '') +
@@ -221,28 +231,37 @@
   }
 
   // ── BUQUES (en tránsito ahora, hoja GUARDIA) ────────────────────
+  function tarjetaBuque(b, tipo, meta) {
+    return '<div class="desp-card" data-tipo="' + tipo + '" data-nombre="' + esc(b.buque) + '">' +
+      '<div class="desp-head ' + tipo + '"><div><div class="desp-buque">' + esc(b.buque) + '</div>' +
+      '<div class="desp-meta">' + meta + (b.canal ? ' · Canal ' + esc(b.canal) : '') + '</div></div>' +
+      (b.calado ? '<span class="badge b-azul">' + esc(b.calado) + '</span>' : '') + '</div>' +
+      '<div class="desp-body">' +
+      (b.practicos && b.practicos.length ? '<div class="desp-practicos">' + b.practicos.map(function (p, i) {
+        return '<div class="prac-chip"><div class="chip-pos">' + (i + 1) + '</div><div class="chip-nombre">' + esc(p) + '</div><div class="chip-icon">⚓</div></div>';
+      }).join('') + '</div>' : '') +
+      // Cada dato ya trae su propia etiqueta tal cual está en la planilla
+      // (ej. "S.N:23:30", "ESC:", "I:07:20") — no se le pone un rótulo inventado.
+      (b.datos && b.datos.length ? '<div class="desp-datos">' + b.datos.map(function (d) {
+        return '<div class="dato-row"><span class="dato-val">' + esc(d) + '</span></div>';
+      }).join('') + '</div>' : '') +
+      '</div></div>';
+  }
+
   function renderBuques(t) {
     var cont = document.getElementById('listaBuquesDesp');
     if (!cont || !t) return;
     var html = '';
 
-    t.aRosario.forEach(function (b) {
-      html += '<div class="desp-card" data-tipo="bajada" data-nombre="' + esc(b.buque) + '">' +
-        '<div class="desp-head bajada"><div><div class="desp-buque">' + esc(b.buque) + '</div>' +
-        '<div class="desp-meta">En viaje a Rosario' + (b.canal ? ' · Canal ' + esc(b.canal) : '') + '</div></div>' +
-        (b.calado ? '<span class="badge b-azul">' + esc(b.calado) + '</span>' : '') + '</div>' +
-        '<div class="desp-body">' +
-        (b.practicos.length ? '<div class="desp-practicos">' + b.practicos.map(function (p, i) {
-          return '<div class="prac-chip"><div class="chip-pos">' + (i + 1) + '</div><div class="chip-nombre">' + esc(p) + '</div><div class="chip-icon">⚓</div></div>';
-        }).join('') + '</div>' : '') +
-        '<div class="desp-datos">' +
-        (b.horaEmbarque ? '<div class="dato-row"><span class="dato-label">Embarque:</span><span class="dato-val">' + esc(b.horaEmbarque) + '</span></div>' : '') +
-        (b.horaSalidaNorte ? '<div class="dato-row"><span class="dato-label">S. Norte:</span><span class="dato-val">' + esc(b.horaSalidaNorte) + '</span></div>' : '') +
-        (b.horaLlegadaSur ? '<div class="dato-row"><span class="dato-label">S. Sur:</span><span class="dato-val">' + esc(b.horaLlegadaSur) + '</span></div>' : '') +
-        '</div></div></div>';
+    (t.aRosario || []).forEach(function (b) {
+      html += tarjetaBuque(b, 'subida', 'En viaje a Rosario');
     });
 
-    t.aCampana.forEach(function (b) {
+    (t.deRosario || []).forEach(function (b) {
+      html += tarjetaBuque(b, 'bajada', 'En viaje de Rosario');
+    });
+
+    (t.aCampana || []).forEach(function (b) {
       html += '<div class="desp-card" data-tipo="movimiento" data-nombre="' + esc(b.buque) + '">' +
         '<div class="desp-head movimiento"><div><div class="desp-buque">' + esc(b.buque) + '</div>' +
         '<div class="desp-meta">En viaje a Campana' + (b.canal ? ' · Canal ' + esc(b.canal) : '') + '</div></div></div>' +
@@ -254,15 +273,21 @@
         '</div></div></div>';
     });
 
-    if (t.guardiaRosario.length) {
+    if (t.guardiaRosario && t.guardiaRosario.length) {
       html += '<div class="card"><div class="card-head"><span>👥</span><span class="card-head-title">Guardia Rosario (bajada)</span></div>' +
         t.guardiaRosario.map(function (g) {
-          return '<div class="prac-row"><div class="prac-num">•</div><div class="prac-info"><div class="prac-nombre">' + esc(g.practico) + '</div>' +
-            '<div class="prac-detalle">' + esc(g.hora) + '</div></div><div class="prac-badge">' + esc(g.tipo || '—') + '</div></div>';
+          // Una vez confirmada la bajada, el/los prácticos quedan despachados
+          // con el buque designado. Si todavía no tiene buque, sigue en espera.
+          var nombres = (g.practicos || []).join(' / ');
+          var estadoBadge = g.buque
+            ? '<span class="badge b-verde">🚢 ' + esc(g.buque) + '</span>'
+            : '<span class="badge b-naranja">⏳ En espera</span>';
+          return '<div class="prac-row"><div class="prac-num">•</div><div class="prac-info"><div class="prac-nombre">' + esc(nombres) + '</div>' +
+            '<div class="prac-detalle">' + esc(g.hora) + '</div></div>' + estadoBadge + '</div>';
         }).join('') + '</div>';
     }
 
-    document.querySelectorAll('#listaBuquesDesp .desp-card').forEach(function (el) { el.remove(); });
+    document.querySelectorAll('#listaBuquesDesp .desp-card, #listaBuquesDesp .card').forEach(function (el) { el.remove(); });
     var vacio = document.getElementById('emptyBuques');
     if (vacio) vacio.insertAdjacentHTML('beforebegin', html);
   }
