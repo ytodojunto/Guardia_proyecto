@@ -14,12 +14,29 @@
  * 5. Copiar la URL que te da (".../exec") y pasársela a Claude para wirear el frontend.
  * 6. Cada vez que se edite el código hay que crear una "Nueva implementación"
  *    (o gestionar implementaciones → editar → nueva versión) para que los cambios se publiquen.
+ * 7. IMPORTANTE — clave de acceso: ⚙️ (ícono de Configuración del proyecto, en el
+ *    menú de la izquierda) → Propiedades del script → Agregar propiedad de script:
+ *      Propiedad: CLAVE_ACCESO
+ *      Valor: la misma contraseña que se usa para entrar a la web
+ *    Esto NUNCA queda en GitHub — vive solo acá, dentro de tu cuenta de Google.
  */
 
 // ─────────────────────────────────────────────────────────────
 // PUNTO DE ENTRADA
 // ─────────────────────────────────────────────────────────────
 function doGet(e) {
+  // ── Control de acceso ──
+  // La clave real se guarda en Apps Script → Configuración del proyecto (⚙️)
+  // → Propiedades del script → CLAVE_ACCESO. NUNCA se sube a GitHub así,
+  // por eso vive acá y no en el HTML/JS público.
+  var claveEsperada = PropertiesService.getScriptProperties().getProperty('CLAVE_ACCESO');
+  var claveRecibida = (e.parameter.clave || '');
+  if (claveEsperada && claveRecibida !== claveEsperada) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ error: 'No autorizado' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var data = {
     actualizado: new Date().toISOString(),

@@ -17,9 +17,12 @@
       console.warn('Falta configurar GUARDIA_API_URL en assets/config.js');
       return;
     }
+    var clave = sessionStorage.getItem('mp_clave') || '';
+    var urlConClave = url + (url.indexOf('?') === -1 ? '?' : '&') + 'clave=' + encodeURIComponent(clave);
     try {
-      var resp = await fetch(url, { cache: 'no-store' });
+      var resp = await fetch(urlConClave, { cache: 'no-store' });
       var data = await resp.json();
+      if (data.error) { console.error('Backend rechazó el acceso:', data.error); return; }
       renderTurno(data.turno);
       renderPrevistos(data.previstos);
       renderNovedades(data.novedades);
@@ -162,5 +165,5 @@
       '<div class="card"><div class="card-head"><span>🌙</span><span class="card-head-title">Turno 19 a 07</span></div>' + pintarTurno(r.turno2) + '</div>';
   }
 
-  document.addEventListener('DOMContentLoaded', cargarDatos);
+  document.addEventListener('mp:auth-ok', cargarDatos);
 })();
