@@ -47,7 +47,8 @@ function doGet(e) {
       .concat(parseProgramacion(ss.getSheetByName('BAJADAS'), 'bajada'))
       .concat(parseProgramacion(ss.getSheetByName('CAMPANA'), 'campana')),
     novedades: parseNovedades(ss.getSheetByName('NOVEDADES')),
-    remises: parseRemises(ss.getSheetByName('GUARDIA REMISES'))
+    remises: parseRemises(ss.getSheetByName('GUARDIA REMISES')),
+    transitos: parseTransitos(ss.getSheetByName('GUARDIA'))
   };
   return ContentService
     .createTextOutput(JSON.stringify(data))
@@ -256,4 +257,83 @@ function parseRemises(sheet) {
     if (nom2 && typeof pos2 === 'number') turno2.push({ pos: pos2, nombre: nom2, obs: obs2 });
   }
   return { turno1: turno1, turno2: turno2 };
+}
+
+// ─────────────────────────────────────────────────────────────
+// HOJA "GUARDIA" — buques en tránsito (bloques "EN VIAJE A/DE
+// ROSARIO" y "EN VIAJE A/DE CAMPANA"). Formato visual tipo planilla:
+// cada buque ocupa 2 filas (nombre+calado en la primera, horarios en
+// la segunda). Se ubica por etiquetas ancla, no por número de fila fijo,
+// para tolerar que la cantidad de buques varíe semana a semana.
+// ─────────────────────────────────────────────────────────────
+function parseTransitos(sheet) {
+  if (!sheet) return { aRosario: [], guardiaRosario: [], aCampana: [] };
+  var vals = sheet.getDataRange().getValues();
+  var col = function (letra) {
+    var n = 0;
+    for (var i = 0; i < letra.length; i++) n = n * 26 + (letra.charCodeAt(i) - 64);
+    return n - 1;
+  };
+  var A=col('A'),B=col('B'),Cc=col('C'),E=col('E'),H=col('H'),I=col('I'),
+      L=col('L'),Q=col('Q'),S=col('S'),U=col('U'),Y=col('Y'),Z=col('Z');
+
+  function buscarFila(colIdx, textoInicio, desde) {
+    for (var r = desde || 0; r < vals.length; r++) {
+      if (s(vals[r][colIdx]).toUpperCase().indexOf(textoInicio) === 0) return r;
+    }
+    return -1;
+  }
+
+  // ── EN VIAJE A ROSARIO (buques subiendo, 2 filas por buque) ──
+  var aRosario = [];
+  var rInicio = buscarFila(A, 'EN VIAJE A ROSARIO', 0);
+  var rFin = buscarFila(A, 'EN VIAJE DE ROSARIO', rInicio + 1);
+  if (rInicio >= 0) {
+    var limite = rFin > 0 ? rFin : vals.length;
+    for (var r = rInicio + 1; r + 1 < limite; r += 2) {
+      var buque = s(vals[r][I]);
+      if (!buque) continue;
+      aRosario.push({
+        buque: buque,
+        calado: s(vals[r][Q]),
+        canal: s(vals[r][S]),
+        practicos: [s(vals[r][B]), s(vals[r + 1][B])].filter(Boolean),
+        horaEmbarque: s(vals[r + 1][E]),
+        horaSalidaNorte: s(vals[r + 1][L]),
+        horaLlegadaSur: s(vals[r + 1][Q])
+      });
+    }
+  }
+
+  // ── GUARDIA ROSARIO (prácticos de bajada disponibles, junto al bloque anterior) ──
+  var guardiaRosario = [];
+  var rGuardia = buscarFila(U, 'GUARDIA ROSARIO', 0);
+  if (rGuardia >= 0) {
+    for (var rg = rGuardia + 1; rg < vals.length; rg++) {
+      var nombreG = s(vals[rg][U]);
+      if (!nombreG) break;
+      guardiaRosario.push({ practico: nombreG, tipo: s(vals[rg][Y]), hora: s(vals[rg][Z]) });
+    }
+  }
+
+  // ── EN VIAJE A CAMPANA (2 filas por buque) ──
+  var aCampana = [];
+  var rCampInicio = buscarFila(B, 'EN VIAJE A CAMPANA', 0);
+  var rCampFin = buscarFila(B, 'MOVIMIENTOS', rCampInicio + 1);
+  if (rCampInicio >= 0) {
+    var limiteC = rCampFin > 0 ? rCampFin : vals.length;
+    for (var rc = rCampInicio + 1; rc + 1 < limiteC; rc += 2) {
+      var buqueC = s(vals[rc][E]);
+      if (!buqueC) continue;
+      aCampana.push({
+        buque: buqueC,
+        practico: s(vals[rc][B]),
+        canal: s(vals[rc][I]),
+        horaEmbarque: s(vals[rc + 1][Cc]),
+        horaDesembarque: s(vals[rc + 1][H])
+      });
+    }
+  }
+
+  return { aRosario: aRosario, guardiaRosario: guardiaRosario, aCampana: aCampana };
 }

@@ -27,6 +27,7 @@
       renderPrevistos(data.previstos);
       renderNovedades(data.novedades);
       renderRemises(data.remises);
+      renderBuques(data.transitos);
       var fechaEl = document.querySelector('.hdr-fecha');
       if (fechaEl && data.actualizado) {
         var d = new Date(data.actualizado);
@@ -172,6 +173,53 @@
     cont.innerHTML =
       '<div class="card" style="margin-top:10px"><div class="card-head"><span>🚕</span><span class="card-head-title">Turno 07 a 19</span></div>' + pintarTurno(r.turno1) + '</div>' +
       '<div class="card"><div class="card-head"><span>🌙</span><span class="card-head-title">Turno 19 a 07</span></div>' + pintarTurno(r.turno2) + '</div>';
+  }
+
+  // ── BUQUES (en tránsito ahora, hoja GUARDIA) ────────────────────
+  function renderBuques(t) {
+    var cont = document.getElementById('listaBuquesDesp');
+    if (!cont || !t) return;
+    var html = '';
+
+    t.aRosario.forEach(function (b) {
+      html += '<div class="desp-card" data-tipo="bajada" data-nombre="' + esc(b.buque) + '">' +
+        '<div class="desp-head bajada"><div><div class="desp-buque">' + esc(b.buque) + '</div>' +
+        '<div class="desp-meta">En viaje a Rosario' + (b.canal ? ' · Canal ' + esc(b.canal) : '') + '</div></div>' +
+        (b.calado ? '<span class="badge b-azul">' + esc(b.calado) + '</span>' : '') + '</div>' +
+        '<div class="desp-body">' +
+        (b.practicos.length ? '<div class="desp-practicos">' + b.practicos.map(function (p, i) {
+          return '<div class="prac-chip"><div class="chip-pos">' + (i + 1) + '</div><div class="chip-nombre">' + esc(p) + '</div><div class="chip-icon">⚓</div></div>';
+        }).join('') + '</div>' : '') +
+        '<div class="desp-datos">' +
+        (b.horaEmbarque ? '<div class="dato-row"><span class="dato-label">Embarque:</span><span class="dato-val">' + esc(b.horaEmbarque) + '</span></div>' : '') +
+        (b.horaSalidaNorte ? '<div class="dato-row"><span class="dato-label">S. Norte:</span><span class="dato-val">' + esc(b.horaSalidaNorte) + '</span></div>' : '') +
+        (b.horaLlegadaSur ? '<div class="dato-row"><span class="dato-label">S. Sur:</span><span class="dato-val">' + esc(b.horaLlegadaSur) + '</span></div>' : '') +
+        '</div></div></div>';
+    });
+
+    t.aCampana.forEach(function (b) {
+      html += '<div class="desp-card" data-tipo="movimiento" data-nombre="' + esc(b.buque) + '">' +
+        '<div class="desp-head movimiento"><div><div class="desp-buque">' + esc(b.buque) + '</div>' +
+        '<div class="desp-meta">En viaje a Campana' + (b.canal ? ' · Canal ' + esc(b.canal) : '') + '</div></div></div>' +
+        '<div class="desp-body">' +
+        (b.practico ? '<div class="desp-practicos"><div class="prac-chip"><div class="chip-pos">1</div><div class="chip-nombre">' + esc(b.practico) + '</div><div class="chip-icon">⚓</div></div></div>' : '') +
+        '<div class="desp-datos">' +
+        (b.horaEmbarque ? '<div class="dato-row"><span class="dato-label">Embarque:</span><span class="dato-val">' + esc(b.horaEmbarque) + '</span></div>' : '') +
+        (b.horaDesembarque ? '<div class="dato-row"><span class="dato-label">Desembarque:</span><span class="dato-val">' + esc(b.horaDesembarque) + '</span></div>' : '') +
+        '</div></div></div>';
+    });
+
+    if (t.guardiaRosario.length) {
+      html += '<div class="card"><div class="card-head"><span>👥</span><span class="card-head-title">Guardia Rosario (bajada)</span></div>' +
+        t.guardiaRosario.map(function (g) {
+          return '<div class="prac-row"><div class="prac-num">•</div><div class="prac-info"><div class="prac-nombre">' + esc(g.practico) + '</div>' +
+            '<div class="prac-detalle">' + esc(g.hora) + '</div></div><div class="prac-badge">' + esc(g.tipo || '—') + '</div></div>';
+        }).join('') + '</div>';
+    }
+
+    document.querySelectorAll('#listaBuquesDesp .desp-card').forEach(function (el) { el.remove(); });
+    var vacio = document.getElementById('emptyBuques');
+    if (vacio) vacio.insertAdjacentHTML('beforebegin', html);
   }
 
   document.addEventListener('mp:auth-ok', cargarDatos);
