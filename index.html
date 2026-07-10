@@ -55,7 +55,10 @@ body{font-family:system-ui,-apple-system,sans-serif;font-size:13px;background:#e
 .search-clear{color:rgba(255,255,255,0.5);cursor:pointer;font-size:16px;display:none}
 
 /* NAV TABS */
-.nav-tabs{display:flex;background:var(--azul);border-top:1px solid rgba(255,255,255,0.1);overflow-x:auto;scrollbar-width:none}
+.nav-tabs-wrap{display:flex;align-items:stretch;background:var(--azul);border-top:1px solid rgba(255,255,255,0.1)}
+.nav-tabs{display:flex;flex:1;background:transparent;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth}
+.nav-arrow{display:flex;align-items:center;justify-content:center;width:22px;flex-shrink:0;color:rgba(255,255,255,0.7);font-size:16px;cursor:pointer;user-select:none}
+.nav-arrow:active{color:#fff}
 .nav-tabs::-webkit-scrollbar{display:none}
 .nav-tab{flex:0 0 auto;padding:7px 14px;color:rgba(255,255,255,0.6);font-size:11px;font-weight:500;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s}
 .nav-tab.active{color:#fff;border-bottom-color:#5b9bd5;background:rgba(255,255,255,0.05)}
@@ -254,7 +257,7 @@ html[data-theme="dark"] .leyenda{background:#161a22;border-color:rgba(255,255,25
 html[data-theme="dark"] .empty{color:#7c8698}
 html[data-theme="dark"] .filter-bar,
 html[data-theme="dark"] .sort-bar{background:#1a1f2a}
-html[data-theme="dark"] .nav-tabs{background:#0e1117}
+html[data-theme="dark"] .nav-tabs-wrap{background:#0e1117}
 html[data-theme="dark"] .loading-banner{background:#3a2e10;color:#f2d27a}
 html[data-theme="dark"] .loading-banner.error{background:#3a1a1a;color:#f5a3a3}
 html[data-theme="dark"] mark{background:#5a4a10;color:#fff}
@@ -290,9 +293,8 @@ html[data-theme="dark"] mark{background:#5a4a10;color:#fff}
     </div>
     <div class="hdr-info">
       <div class="hdr-coord">👤 Coord: —</div>
-      <div class="hdr-op">Operador: —</div>
     </div>
-    <div class="hdr-despachos">Mes: <strong style="font-size:10px">En proceso</strong></div>
+    <div class="hdr-despachos">Despachos en el mes: <strong style="font-size:10px">En proceso</strong></div>
     <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Cambiar tema">🌙</div>
   </div>
   <div class="search-global">
@@ -306,13 +308,17 @@ html[data-theme="dark"] mark{background:#5a4a10;color:#fff}
 </div>
 <div class="loading-banner" id="loadingBanner">⏳ Cargando datos de guardia en vivo…</div>
 
-<div class="nav-tabs">
-  <div class="nav-tab active" onclick="showTab('turno')">👥 Turno</div>
-  <div class="nav-tab" onclick="showTab('buques')">🚢 Buques</div>
-  <div class="nav-tab" onclick="showTab('previstos')">📋 Previstos</div>
-  <div class="nav-tab" onclick="showTab('novedades')">📢 Novedades</div>
-  <div class="nav-tab" onclick="showTab('remises')">🚕 Remises</div>
-  <div class="nav-tab" onclick="showTab('info')">🔗 Info</div>
+<div class="nav-tabs-wrap">
+  <div class="nav-arrow nav-arrow-l" onclick="scrollTabs(-1)">‹</div>
+  <div class="nav-tabs" id="navTabs">
+    <div class="nav-tab active" onclick="showTab('turno')">👥 Turno</div>
+    <div class="nav-tab" onclick="showTab('buques')">🚢 Buques</div>
+    <div class="nav-tab" onclick="showTab('previstos')">📋 Previstos</div>
+    <div class="nav-tab" onclick="showTab('novedades')">📢 Novedades</div>
+    <div class="nav-tab" onclick="showTab('remises')">🚕 Remises</div>
+    <div class="nav-tab" onclick="showTab('info')">🔗 Info</div>
+  </div>
+  <div class="nav-arrow nav-arrow-r" onclick="scrollTabs(1)">›</div>
 </div>
 
 <!-- ══ TURNO ══ -->
@@ -447,10 +453,7 @@ html[data-theme="dark"] mark{background:#5a4a10;color:#fff}
 
   <div class="filter-bar" style="margin-top:10px">
     <div class="filter-row">
-      <div class="filter-btn active" onclick="filterNov('todos',this)">Todos</div>
-      <div class="filter-btn rojo" onclick="filterNov('trafico',this)">🚦 Tráfico</div>
-      <div class="filter-btn naranja" onclick="filterNov('turno',this)">📋 Turno</div>
-      <div class="filter-btn verde" onclick="filterNov('permanente',this)">📌 Permanentes</div>
+      <div class="filter-btn active" style="cursor:default">Todos</div>
     </div>
     <div class="filter-search">
       <span>🔍</span>
@@ -464,15 +467,10 @@ html[data-theme="dark"] mark{background:#5a4a10;color:#fff}
   </div>
 
   <div class="card">
-    <div class="card-head"><span>⚓</span><span class="card-head-title">Determinantes</span><span class="card-head-count">23/06</span></div>
-    <div class="det-row"><span class="det-label">Canal Pta. Indio <span class="det-km">152,8</span></span><span class="det-val det-ok">10,40 m</span></div>
-    <div class="det-row"><span class="det-label">Canal Intermedio <span class="det-km">112,4</span></span><span class="det-val det-ok">10,60 m</span></div>
-    <div class="det-row"><span class="det-label">Paso Banco Chico <span class="det-km">75,4</span></span><span class="det-val det-warn">10,90 m</span></div>
-    <div class="det-row"><span class="det-label">Rada Exterior <span class="det-km">52,4</span></span><span class="det-val det-warn">11,50 m</span></div>
-    <div class="det-row"><span class="det-label">Canal Brown <span class="det-km">13,2</span></span><span class="det-val det-ok">10,50 m</span></div>
-    <div class="det-row"><span class="det-label">Canal E. Mitre <span class="det-km">27,3</span></span><span class="det-val det-ok">10,50 m</span></div>
-    <div class="det-row"><span class="det-label">Canal E. Mitre <span class="det-km">42,4</span></span><span class="det-val det-warn">13,00 m</span></div>
-    <div class="det-row"><span class="det-label">Canal E. Mitre <span class="det-km">47,9</span></span><span class="det-val det-ok">10,60 m</span></div>
+    <div class="card-head"><span>⚓</span><span class="card-head-title">Determinantes</span></div>
+    <div id="listaDeterminantes">
+      <div class="loading-skel"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="txt">Cargando datos en vivo…</span></div>
+    </div>
   </div>
 
   <div class="card" id="listaNov">
@@ -539,6 +537,10 @@ html[data-theme="dark"] mark{background:#5a4a10;color:#fff}
 })();
 
 // ── TAB NAV ──────────────────────────────────────────────────────
+function scrollTabs(dir){
+  var el = document.getElementById('navTabs');
+  if (el) el.scrollBy({ left: dir * 120, behavior: 'smooth' });
+}
 function showTab(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
