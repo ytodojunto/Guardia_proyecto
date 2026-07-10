@@ -103,6 +103,7 @@ function parseGuardia(sheet) {
     francos: [],
     enfermos: [],
     observaciones: [],
+    telefonos: [],
     presidente: '', coordinador: ''
   };
 
@@ -143,6 +144,15 @@ function parseGuardia(sheet) {
         if (!texto) continue;
         if (/^(PRESIDENTE|https?:\/\/|Desde este vinculo|CANAL M\. GARCIA|\d{2}\/\d{2}\/\d{2})/i.test(texto)) break;
         result.observaciones.push(texto);
+      }
+    }
+    if (uVal.indexOf('TELEFONOS DE LAS LANCHAS') === 0) {
+      for (var rt = r2 + 1; rt < vals.length; rt++) {
+        var puerto = s(vals[rt][U]);
+        if (!puerto) break;
+        var tel = s(vals[rt][col('X')]);
+        var telExtra = s(vals[rt][col('AB')]);
+        result.telefonos.push({ puerto: puerto, telefono: tel + (telExtra ? ' / ' + telExtra : '') });
       }
     }
     if (s(vals[r2][B]).toUpperCase().indexOf('PRESIDENTE:') === 0) {

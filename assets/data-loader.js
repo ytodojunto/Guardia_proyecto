@@ -92,6 +92,24 @@
       stats[2].textContent = t.enfermos.length + t.observaciones.length;
       stats[3].textContent = t.practicos.filter(function (p) { return p.cambio; }).length;
     }
+
+    // coordinador / presidente en el header
+    var hdrCoord = document.querySelector('.hdr-coord');
+    if (hdrCoord && t.coordinador) hdrCoord.textContent = '👤 Coord: ' + t.coordinador;
+    var hdrOp = document.querySelector('.hdr-op');
+    if (hdrOp && t.presidente) hdrOp.textContent = 'Presidente: ' + t.presidente;
+
+    // teléfonos reales en la pestaña Info (reemplaza los de ejemplo)
+    if (t.telefonos && t.telefonos.length) {
+      var infoCards = document.querySelectorAll('#sec-info .card');
+      var cardTel = infoCards[1]; // segunda tarjeta = "Teléfonos de servicio"
+      if (cardTel) {
+        cardTel.innerHTML = '<div class="card-head"><span>📞</span><span class="card-head-title">Teléfonos de servicio</span></div>' +
+          t.telefonos.map(function (tf) {
+            return '<div class="tel-row"><span class="tel-puerto">' + esc(tf.puerto) + '</span><span class="tel-num">' + esc(tf.telefono) + '</span></div>';
+          }).join('');
+      }
+    }
     var cntTurno = document.getElementById('cntTurno');
     var cntFrancos = document.getElementById('cntFrancos');
     if (cntTurno) cntTurno.textContent = t.practicos.length;
