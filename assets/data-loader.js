@@ -14,12 +14,14 @@
   // ── ESTADO DE CARGA ──────────────────────────────────────────────
   // El HTML arranca con "loading-skel" (puntitos animados) en vez de datos
   // de ejemplo, para que nunca se confunda un placeholder con un dato real.
+  function limpiarSkeletons() {
+    document.querySelectorAll('.loading-skel').forEach(function (el) { el.remove(); });
+  }
+
   function ocultarBanner() {
     var banner = document.getElementById('loadingBanner');
     if (banner) banner.classList.add('oculto');
-    // Por si algún contenedor no hizo un innerHTML completo (ej. Buques),
-    // se limpia cualquier skeleton que haya quedado colgado.
-    document.querySelectorAll('.loading-skel').forEach(function (el) { el.remove(); });
+    limpiarSkeletons();
   }
 
   function mostrarErrorBanner(msg) {
@@ -58,7 +60,16 @@
         var d = new Date(data.actualizado);
         fechaEl.textContent = '📅 Actualizado: ' + d.toLocaleDateString('es-AR') + ' — ' + d.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
       }
-      ocultarBanner();
+      limpiarSkeletons();
+      if (data.avisos && data.avisos.length) {
+        // El backend no encontró algo que esperaba en la planilla (probablemente
+        // se movió una columna o se renombró un encabezado) — se avisa en vez
+        // de mostrar datos vacíos o mal en silencio.
+        mostrarErrorBanner('Revisar planilla: ' + data.avisos.join(' · '));
+      } else {
+        var banner = document.getElementById('loadingBanner');
+        if (banner) banner.classList.add('oculto');
+      }
     } catch (err) {
       console.error('Error cargando datos de guardia:', err);
       mostrarErrorBanner('No se pudieron cargar los datos. Revisá tu conexión y recargá la página.');
