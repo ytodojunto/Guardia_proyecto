@@ -55,6 +55,7 @@
       renderNovedades(data.novedades);
       renderRemises(data.remises);
       renderBuques(data.transitos);
+      renderGuardiaRosarioTurno(data.transitos ? data.transitos.guardiaRosario : []);
       var fechaEl = document.querySelector('.hdr-fecha');
       if (fechaEl && data.actualizado) {
         var d = new Date(data.actualizado);
@@ -155,6 +156,31 @@
     if (cntFrancos) cntFrancos.textContent = t.francos.length;
   }
 
+  // ── GUARDIA ROSARIO EN PESTAÑA TURNO (bajada) ────────────────────
+  // Se muestra en la página principal Turno, después del listado en
+  // turno y antes de Francos, además de en la pestaña Buques.
+  function renderGuardiaRosarioTurno(lista) {
+    var card = document.getElementById('cardGuardiaRosario');
+    var cont = document.getElementById('listaGuardiaRosario');
+    var cnt = document.getElementById('cntGuardiaRosario');
+    if (!card || !cont) return;
+    if (!lista || !lista.length) {
+      card.style.display = 'none';
+      return;
+    }
+    card.style.display = '';
+    if (cnt) cnt.textContent = lista.length;
+    cont.innerHTML = lista.map(function (g) {
+      // g.tipo trae el estado tal como está en la planilla (p.ej. nombre de
+      // buque una vez asignado, o vacío mientras no se confirma la bajada).
+      var estadoBadge = g.tipo
+        ? '<span class="badge b-verde">🚢 ' + esc(g.tipo) + '</span>'
+        : '<span class="badge b-naranja">⏳ En espera</span>';
+      return '<div class="prac-row"><div class="prac-num">•</div><div class="prac-info"><div class="prac-nombre">' + esc(g.practico) + '</div>' +
+        '<div class="prac-detalle">' + esc(g.hora) + '</div></div>' + estadoBadge + '</div>';
+    }).join('');
+  }
+
   // ── DETERMINANTES (canal/km/calado reales, hoja GUARDIA B71+) ────
   function renderDeterminantes(lista) {
     var cont = document.getElementById('listaDeterminantes');
@@ -165,6 +191,20 @@
   }
 
   // ── PREVISTOS (subidas / bajadas / campana) ──────────────────
+  // Convierte "dd/MM/yyyy" + "HH:mm" en una clave ordenable "YYYYMMDDHHmm".
+  // Antes se concatenaban los dígitos tal cual venían en la planilla
+  // (DDMMYYYYHHmm), lo que ordena por día antes que por año/mes y mezcla
+  // mal fechas de distintos meses o años entre sí — con Subidas, Bajadas
+  // y Campana en la misma lista, esto rompía el orden cronológico real.
+  function claveOrdenFecha(fecha, hora) {
+    var m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(fecha || '');
+    var partefecha = m
+      ? (m[3] + m[2].padStart(2, '0') + m[1].padStart(2, '0'))
+      : '99999999'; // fechas no reconocidas van al final, no rompen el orden
+    var partehora = soloDigitos(hora).padStart(4, '0').slice(0, 4) || '0000';
+    return partefecha + partehora;
+  }
+
   function renderPrevistos(lista) {
     var cont = document.getElementById('listaPrevistos');
     if (!cont || !lista) return;
@@ -178,7 +218,7 @@
       // significa que la agencia haya autorizado el despacho. Solo el texto explícito
       // ("AUTORIZADO" / "NO AUT") define el estado; si no dice nada, queda "sin confirmar".
       var tipoFiltro = b.tipo === 'campana' ? 'movimiento' : b.tipo;
-      var dataHora = soloDigitos(b.fechaRecalada) + soloDigitos(b.horaRecalada);
+      var dataHora = claveOrdenFecha(b.fechaRecalada, b.horaRecalada);
       var icon = b.tipo === 'subida' ? '⬆️' : (b.tipo === 'bajada' ? '⬇️' : '🔄');
       var marcaBadge = '';
       if (b.marca === 'X') marcaBadge = '<span class="badge b-verde">✔ Despachado</span>';
@@ -287,13 +327,12 @@
     if (t.guardiaRosario && t.guardiaRosario.length) {
       html += '<div class="card"><div class="card-head"><span>👥</span><span class="card-head-title">Guardia Rosario (bajada)</span></div>' +
         t.guardiaRosario.map(function (g) {
-          // Una vez confirmada la bajada, el/los prácticos quedan despachados
-          // con el buque designado. Si todavía no tiene buque, sigue en espera.
-          var nombres = (g.practicos || []).join(' / ');
-          var estadoBadge = g.buque
-            ? '<span class="badge b-verde">🚢 ' + esc(g.buque) + '</span>'
+          // g.tipo trae el estado tal como está en la planilla (p.ej. nombre de
+          // buque una vez asignado, o vacío/"en espera" mientras no se confirma).
+          var estadoBadge = g.tipo
+            ? '<span class="badge b-verde">🚢 ' + esc(g.tipo) + '</span>'
             : '<span class="badge b-naranja">⏳ En espera</span>';
-          return '<div class="prac-row"><div class="prac-num">•</div><div class="prac-info"><div class="prac-nombre">' + esc(nombres) + '</div>' +
+          return '<div class="prac-row"><div class="prac-num">•</div><div class="prac-info"><div class="prac-nombre">' + esc(g.practico) + '</div>' +
             '<div class="prac-detalle">' + esc(g.hora) + '</div></div>' + estadoBadge + '</div>';
         }).join('') + '</div>';
     }
