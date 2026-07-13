@@ -283,9 +283,13 @@
 
   // ── BUQUES (en tránsito ahora, hoja GUARDIA) ────────────────────
   function tarjetaBuque(b, tipo, meta) {
+    // La planilla no trae fecha propia por cada horario de tránsito (sólo
+    // "I: 22:30", "S.N: 14:30", etc.) — se agrega la fecha del turno como
+    // referencia, ya que es el único dato de fecha real disponible.
+    var metaFull = meta + (b.fecha ? ' · ' + esc(b.fecha) : '') + (b.canal ? ' · Canal ' + esc(b.canal) : '');
     return '<div class="desp-card" data-tipo="' + tipo + '" data-nombre="' + esc(b.buque) + '">' +
       '<div class="desp-head ' + tipo + '"><div><div class="desp-buque">' + esc(b.buque) + '</div>' +
-      '<div class="desp-meta">' + meta + (b.canal ? ' · Canal ' + esc(b.canal) : '') + '</div></div>' +
+      '<div class="desp-meta">' + metaFull + '</div></div>' +
       (b.calado ? '<span class="badge b-azul">' + esc(b.calado) + '</span>' : '') + '</div>' +
       '<div class="desp-body">' +
       (b.practicos && b.practicos.length ? '<div class="desp-practicos">' + b.practicos.map(function (p, i) {
@@ -315,7 +319,7 @@
     (t.aCampana || []).forEach(function (b) {
       html += '<div class="desp-card" data-tipo="movimiento" data-nombre="' + esc(b.buque) + '">' +
         '<div class="desp-head movimiento"><div><div class="desp-buque">' + esc(b.buque) + '</div>' +
-        '<div class="desp-meta">En viaje a Campana' + (b.canal ? ' · Canal ' + esc(b.canal) : '') + '</div></div></div>' +
+        '<div class="desp-meta">En viaje a Campana' + (b.fecha ? ' · ' + esc(b.fecha) : '') + (b.canal ? ' · Canal ' + esc(b.canal) : '') + '</div></div></div>' +
         '<div class="desp-body">' +
         (b.practico ? '<div class="desp-practicos"><div class="prac-chip"><div class="chip-pos">1</div><div class="chip-nombre">' + esc(b.practico) + '</div><div class="chip-icon">⚓</div></div></div>' : '') +
         '<div class="desp-datos">' +

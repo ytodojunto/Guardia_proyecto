@@ -277,7 +277,7 @@ function parseRemises(sheet) {
 // para tolerar que la cantidad de buques varíe semana a semana.
 // ─────────────────────────────────────────────────────────────
 function parseTransitos(sheet) {
-  if (!sheet) return { aRosario: [], guardiaRosario: [], aCampana: [] };
+  if (!sheet) return { aRosario: [], deRosario: [], guardiaRosario: [], aCampana: [] };
   var vals = sheet.getDataRange().getValues();
   var col = function (letra) {
     var n = 0;
@@ -294,26 +294,43 @@ function parseTransitos(sheet) {
     return -1;
   }
 
-  // ── EN VIAJE A ROSARIO (buques subiendo, 2 filas por buque) ──
-  var aRosario = [];
-  var rInicio = buscarFila(A, 'EN VIAJE A ROSARIO', 0);
-  var rFin = buscarFila(A, 'EN VIAJE DE ROSARIO', rInicio + 1);
-  if (rInicio >= 0) {
+  // La planilla no trae una fecha propia por cada horario de tránsito
+  // (las celdas son sólo "I: 22:30", "S.N: 14:30", etc., sin día) — la
+  // única fecha real disponible es la del turno (fila 2, misma que usa
+  // parseGuardia), así que se propaga acá para dar contexto en la tarjeta.
+  var fechaTurno = fmtFecha(vals[1][col('V')] || vals[1][22]);
+
+  // ── Bloques "EN VIAJE A ROSARIO" (subida) / "EN VIAJE DE ROSARIO" (bajada) ──
+  // Cada buque ocupa 2 filas: fila 1 = marca/práctico1/buque(I)/calado(Q)/canal(S);
+  // fila 2 = práctico2 + hasta 4 horarios en E/H/L/Q, cada uno con su propia
+  // etiqueta ya incluida en el texto (ej. "I:", "S.N:", "ESC:", "Z.C:") —
+  // se muestran tal cual, sin inventar rótulos nuevos.
+  function leerBloqueRosario(rInicio, rFin) {
+    var out = [];
+    if (rInicio < 0) return out;
     var limite = rFin > 0 ? rFin : vals.length;
     for (var r = rInicio + 1; r + 1 < limite; r += 2) {
       var buque = s(vals[r][I]);
       if (!buque) continue;
-      aRosario.push({
+      var datos = [s(vals[r + 1][E]), s(vals[r + 1][H]), s(vals[r + 1][L]), s(vals[r + 1][Q])].filter(Boolean);
+      out.push({
         buque: buque,
         calado: s(vals[r][Q]),
         canal: s(vals[r][S]),
         practicos: [s(vals[r][B]), s(vals[r + 1][B])].filter(Boolean),
-        horaEmbarque: s(vals[r + 1][E]),
-        horaSalidaNorte: s(vals[r + 1][L]),
-        horaLlegadaSur: s(vals[r + 1][Q])
+        datos: datos,
+        fecha: fechaTurno
       });
     }
+    return out;
   }
+
+  var rAInicio = buscarFila(A, 'EN VIAJE A ROSARIO', 0);
+  var rDInicio = buscarFila(A, 'EN VIAJE DE ROSARIO', rAInicio + 1);
+  var aRosario = leerBloqueRosario(rAInicio, rDInicio);
+  // El bloque "de Rosario" termina donde arranca la lista de FRANCOS (columna U)
+  var rDFin = buscarFila(U, 'FRANCOS', rDInicio + 1);
+  var deRosario = leerBloqueRosario(rDInicio, rDFin);
 
   // ── GUARDIA ROSARIO (prácticos de bajada disponibles, junto al bloque anterior) ──
   var guardiaRosario = [];
@@ -340,10 +357,11 @@ function parseTransitos(sheet) {
         practico: s(vals[rc][B]),
         canal: s(vals[rc][I]),
         horaEmbarque: s(vals[rc + 1][Cc]),
-        horaDesembarque: s(vals[rc + 1][H])
+        horaDesembarque: s(vals[rc + 1][H]),
+        fecha: fechaTurno
       });
     }
   }
 
-  return { aRosario: aRosario, guardiaRosario: guardiaRosario, aCampana: aCampana };
+  return { aRosario: aRosario, deRosario: deRosario, guardiaRosario: guardiaRosario, aCampana: aCampana };
 }
